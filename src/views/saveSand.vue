@@ -108,7 +108,8 @@
           </div>
         </div>
         <div class="btnlist">
-          <div class="btn" @click="openMessageBox">
+<!--          @click="openMessageBox"-->
+          <div class="btn" >
             <i class="el-icon-picture"><span style="font-size: 14px">图片</span></i>
           </div>
           <div class="btn">
@@ -298,7 +299,7 @@
         content: '',
         time: '',
         value: null,
-        name: "TableList",
+        name: "saveSand",
         joinUnits: [],
         organizationUnits: [],
         planTypes: [],
@@ -330,42 +331,34 @@
       EditorBar
     },
     mounted() {
-      this.id = this.$route.params.id
-      this.getData(this.id)
-      localStorage.setItem('currentname' , '演练方案')
+      // this.id = this.$route.params.id
+      // this.getData(this.id)
+      this.getData ()
     },
     methods: {
+      goIndex(){
+        this.$router.push({
+          name : `SandList`
+        })
+      },
       changeStep(id){
         this.form.step = id
       },
-      getData(id) {
-        this.$get(api.detail + "?id=" + id).then(res => {
+      getData (){
+        this.$get(api.preparedData).then(res=>{
           console.log(res)
-          if (res.errno == 200) {
-            let joinUnits = []
-            this.planTypes = res.data.planTypes
-            // this.joinUnits = res.data.joinUnits
-            this.organizationUnits = res.data.organizationUnits
-            for (let item of res.data.joinUnits) {
-              let obj = {}
-              obj.id = item.id
-              obj.label = item.unitName
-              joinUnits.push(obj)
-            }
-            this.joinUnits = joinUnits
-            this.form.sand_name = res.data.planName
-            this.form.time = res.data.createDate
-            this.form.type = parseInt(res.data.planType)
-            this.form.organization = res.data.organizationUnitId
-            this.form.part = res.data.joinUnitIds
-            this.form.region = 2
-            this.planText = res.data.planContent ,
-            this.progressText = res.data.planProcess ,
-            this.finalText = res.data.reportComments ,
-            this.assessmentText = res.data.reportComments ,
-
-            console.log(this.joinUnits)
+          let joinUnits = [ ]
+          this.planTypes = res.data.planTypes
+          // this.joinUnits = res.data.joinUnits
+          this.organizationUnits = res.data.organizationUnits
+          for(let item of res.data.joinUnits){
+            let obj = {}
+            obj.id  = item.id
+            obj.label = item.unitName
+            joinUnits.push(obj)
           }
+          this.joinUnits = joinUnits
+          console.log(this.joinUnits)
         })
       },
       onEditorBlur: function () {
@@ -374,11 +367,6 @@
 
       openMessageBox() {
         this.dialogVisible = true
-      },
-      goIndex(){
-        this.$router.push({
-          name : `SandList`
-        })
       }
     }
   }

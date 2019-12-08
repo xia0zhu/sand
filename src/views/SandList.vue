@@ -121,7 +121,7 @@
     <el-row class="line">
       <div><i style="margin-right: 5px" class="el-icon-s-operation"></i>演练列表</div>
       <div style="position: absolute;right: 14px;font-size: 14px">
-        <el-button size="small" type="primary">新建演练</el-button>
+        <el-button size="small" type="primary" @click="goSaveSand">新建演练</el-button>
       </div>
     </el-row>
     <el-row style="padding: 10px">
@@ -170,7 +170,7 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage1"
+        :current-page="currentPage"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="pagesSize"
         layout="total, sizes, prev, pager, next, jumper"
@@ -310,6 +310,7 @@
       this.getEchart()
       this.getData ()
       this.search()
+      localStorage.setItem('currentname' , '演练系统')
     },
     methods: {
       search (){
@@ -414,6 +415,11 @@
           }
           this.joinUnits = joinUnits
           console.log(this.joinUnits)
+        })
+      } ,
+      goSaveSand (){
+        this.$router.push({
+          name : `SandSave`
         })
       }
     }

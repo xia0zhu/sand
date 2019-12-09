@@ -10,10 +10,11 @@ export const util = {
       const instance= axios.create({
         withCredentials: true,
       })
-      // url = process.env.WEB_API
+      let url = process.env.WEB_API
       axios.defaults.timeout =  6000;
-      instance.post('http://47.99.113.181:1003/drill/storage/create', fd )
+      instance.post('drill/storage/create', fd )
         .then(response => {
+          console.log(response)
           if (response.data.errno == 200) {
             resolve(response.data.data)
           }

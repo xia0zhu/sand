@@ -302,6 +302,11 @@
     <el-dialog :visible.sync="dialogVisiblePicture">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
+
+<!--    音频点击放大播放-->
+    <el-dialog :visible.sync="dialogVisibleAudioModel">
+
+    </el-dialog>
   </div>
 </template>
 
@@ -320,6 +325,7 @@
     data() {
       return {
         audioUrl : '' ,
+        dialogVisibleAudioModel : false ,
         disabled: false,
         fileList: [
           {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
@@ -441,12 +447,12 @@
     },
     methods: {
       imgBroadcastChange(file, fileList) {
-        debugger
         this.file2 = file.raw;
         this.fileName = file.name;
       },
       beforeUpload(file) {
         util.upload(file).then(res => {
+          debugger
           console.log(res)
           if (res.errno = 200) {
             let obj = {}

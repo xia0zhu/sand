@@ -13,6 +13,9 @@ Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 
 import {post,get,patch,put} from './api/https'
+// import vueAudioNative from 'vue-audio-native'
+// Vue.use(vueAudioNative)
+
 Vue.prototype.$post = post;
 Vue.prototype.$get = get;
 Vue.prototype.$patch=patch;

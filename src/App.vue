@@ -4,7 +4,7 @@
     <div class="bar">
       <div style="padding-left:16px">应急演练管理子系统</div>
       <div style="display: flex;margin-right: 30px">
-        <div style="margin-right: 10px" class="btn">进入沙盘</div>
+        <div style="margin-right: 10px;cursor: pointer" class="btn" @click="goSand">进入沙盘</div>
         <div class="btn">退出</div>
       </div>
     </div>
@@ -29,6 +29,11 @@ export default {
   },
   mounted() {
     this.currentname = localStorage.getItem('currentname') || '演练系统'
+  },
+  methods : {
+    goSand(){
+      window.location.href = 'http://47.99.113.181:1001/emergency-system/supermap/index.html#/';
+    }
   }
 }
 </script>

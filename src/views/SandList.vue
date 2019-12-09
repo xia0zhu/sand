@@ -310,7 +310,6 @@
       this.getEchart()
       this.getData ()
       this.search()
-      localStorage.setItem('currentname' , '演练系统')
     },
     methods: {
       search (){

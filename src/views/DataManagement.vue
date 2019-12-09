@@ -56,19 +56,51 @@
         </div>
       </el-col>
 
-      <el-col :span="13">
+      <el-col :span="22">
         <div style="display: flex;margin: 10px;align-items: center">
           <div style="font-size: 14px">图片材料</div>
-          <div style="width: 70%;margin-left: 6%;">
+          <div style="width: 100%;margin-left: 4%;">
             <el-upload
+              style="text-align: left"
               action="/drill/storage/create"
               list-type="picture-card"
               :file-list="fileList"
               with-credentials
+              :show-file-list="true"
               :before-upload="beforeUpload"
               :on-change = "imgBroadcastChange"
               >
               <i class="el-icon-plus"></i>
+
+              <div slot="file" slot-scope="{file}">
+                <img
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url" alt=""
+                >
+                <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <!--<span-->
+          <!--v-if="!disabled"-->
+          <!--class="el-upload-list__item-delete"-->
+          <!--@click="handleDownload(file)"-->
+        <!--&gt;-->
+          <!--<i class="el-icon-download"></i>-->
+        <!--</span>-->
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+              </div>
+
             </el-upload>
             <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="dialogImageUrl" alt="">
@@ -87,6 +119,14 @@
     export default {
       data(){
         return{
+          fileList : [
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+            {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'}
+          ] ,
           name: "DataManagement",
           options: [
             {
@@ -136,38 +176,6 @@
            util.upload(this.file2).then(res=>{
              console.log(res)
           })
-          return
-
-          let fd = new FormData();//通过form数据格式来传
-          fd.append("file", this.file2); //传文件
-          let url = 'http://47.99.113.181:1003' + '/drill/storage/create'
-          let param = new FormData()  // 创建form对象
-          param.append('file', fd)  // file对象是 beforeUpload参数
-          console.log(this.file2)
-          console.log(fd)
-          let config = {
-            headers: {'Content-Type': 'multipart/form-data'}
-          }
-          const instance=this.$axios.create({
-            withCredentials: true
-          })
-          // 添加请求头
-          instance.post('http://47.99.113.181:1003/drill/storage/create', fd)
-            .then(response => {
-              debugger
-              if (response.data.code === 0) {
-                self.ImgUrl = response.data.data
-              }
-              console.log(response.data)
-            })
-
-        return false
-          this.$axios
-            .post(url, fd).then(res=>{
-              debugger
-          })
-          // this.uploadImg('post' , fd)
-          console.log(file)
         },
         async uploadImg(type, params) {
           debugger

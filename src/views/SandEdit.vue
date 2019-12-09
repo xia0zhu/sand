@@ -85,11 +85,11 @@
           <div style="font-size: 14px">预演进度</div>
           <div style="width: 76%;margin-left: 5%;">
             <el-steps :active="form.step" align-center style="width: 100%">
-              <el-step @click.native="changeStep(1)" style="cursor:pointer"  title="步骤1" description=""></el-step>
-              <el-step @click.native="changeStep(2)" style="cursor:pointer"  title="步骤2" description=""></el-step>
-              <el-step @click.native="changeStep(3)" style="cursor:pointer"  title="步骤3" description=""></el-step>
-              <el-step @click.native="changeStep(4)" style="cursor:pointer"  title="步骤4" description=""></el-step>
-              <el-step @click.native="changeStep(5)" style="cursor:pointer"  title="步骤5" description=""></el-step>
+              <el-step @click.native="changeStep(1)" style="cursor:pointer" title="步骤1" description=""></el-step>
+              <el-step @click.native="changeStep(2)" style="cursor:pointer" title="步骤2" description=""></el-step>
+              <el-step @click.native="changeStep(3)" style="cursor:pointer" title="步骤3" description=""></el-step>
+              <el-step @click.native="changeStep(4)" style="cursor:pointer" title="步骤4" description=""></el-step>
+              <el-step @click.native="changeStep(5)" style="cursor:pointer" title="步骤5" description=""></el-step>
             </el-steps>
           </div>
         </div>
@@ -108,10 +108,10 @@
           </div>
         </div>
         <div class="btnlist">
-          <div class="btn" @click="openMessageBox">
+          <div class="btn" @click="planPictureMessageBox">
             <i class="el-icon-picture"><span style="font-size: 14px">图片</span></i>
           </div>
-          <div class="btn">
+          <div class="btn" @click="planAudioMessageBox">
             <i class="el-icon-headset"><span style="font-size: 14px">音频</span></i>
           </div>
           <div class="btn">
@@ -204,20 +204,104 @@
       </el-col>
     </el-row>
 
+    <!--图片弹框-->
     <el-dialog
       title="图片资料"
       style="text-align: left"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="60%"
       :before-close="handleClose">
-      <span>这是一段信息</span>
-      <!--      <span slot="footer" class="dialog-footer">-->
-      <!--    <el-button @click="dialogVisible = false">取 消</el-button>-->
-      <!--    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>-->
-      <!--  </span>-->
+      <el-upload
+        style="text-align: left"
+        action=none
+        list-type="picture-card"
+        :file-list="fileList"
+        with-credentials
+        :show-file-list="true"
+        :before-upload="beforeUpload"
+      >
+        <i class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url" alt=""
+          >
+          <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreview(file)"
+        >
+          <i class="el-icon-zoom-in"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+        </div>
+      </el-upload>
     </el-dialog>
 
+    <!--音频弹框-->
+    <el-dialog
+      title="音频资料"
+      style="text-align: left"
+      :visible.sync="dialogPlanAudioVisible"
+      width="60%"
+      :before-close="handleClose2">
+      <audio ref="audio" :src="audioUrl"></audio>
+      <el-upload
+        style="text-align: left"
+        action=none
+        list-type="picture-card"
+        :file-list="fileList2"
+        with-credentials
+        :show-file-list="true"
+        :before-upload="beforeUpload"
+      >
+        <i class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url" alt=""
+          >
+          <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreviewPlanAudio(file)"
+        >
+          <i class="el-icon-caret-right"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+        </div>
+      </el-upload>
+      <!--<el-dialog :visible.sync="dialogVisibleAudio">-->
+        <!--<img width="100%" :src="dialogImageUrlAudio" alt="">-->
+      <!--</el-dialog>-->
 
+            <div slot="footer" class="dialog-footer">
+<audio src="http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3" id="eventAudio"></audio>
+        </div>
+    </el-dialog>
+
+    <!--图片点击放大弹框-->
+    <el-dialog :visible.sync="dialogVisiblePicture">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
   </div>
 </template>
 
@@ -230,10 +314,29 @@
   // import 'quill/dist/quill.snow.css';
   // import 'quill/dist/quill.bubble.css';
   import {api} from '@/api/api'
+  import {util} from '@/utils/util'
 
   export default {
     data() {
       return {
+        audioUrl : '' ,
+        disabled: false,
+        fileList: [
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'}
+        ],
+        fileList2: [
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
+        ],
         regionoptions: [
           {
             label: '长清区',
@@ -258,7 +361,10 @@
             value: 7
           },
         ],
-        dialogVisible: false,
+        dialogVisible: false, // 图片
+        dialogVisiblePicture: false,
+        dialogPlanAudioVisible : false ,//音频
+        dialogVisibleAudio : false ,
         isClear: false,
         detail: "",
         editorOption: {
@@ -315,7 +421,7 @@
         planText: "",
         progressText: "",
         finalText: "",
-        assessmentText :"" ,
+        assessmentText: "",
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
@@ -332,10 +438,29 @@
     mounted() {
       this.id = this.$route.params.id
       this.getData(this.id)
-      localStorage.setItem('currentname' , '演练方案')
     },
     methods: {
-      changeStep(id){
+      imgBroadcastChange(file, fileList) {
+        debugger
+        this.file2 = file.raw;
+        this.fileName = file.name;
+      },
+      beforeUpload(file) {
+        util.upload(file).then(res => {
+          console.log(res)
+          if (res.errno = 200) {
+            let obj = {}
+            obj.name = res.name
+            obj.url = res.url
+            this.fileList.push(obj)
+          }
+        })
+        console.log(this.fileList)
+
+
+      },
+
+      changeStep(id) {
         this.form.step = id
       },
       getData(id) {
@@ -360,11 +485,11 @@
             this.form.part = res.data.joinUnitIds
             this.form.region = 2
             this.planText = res.data.planContent ,
-            this.progressText = res.data.planProcess ,
-            this.finalText = res.data.reportComments ,
-            this.assessmentText = res.data.reportComments ,
+              this.progressText = res.data.planProcess ,
+              this.finalText = res.data.reportComments ,
+              this.assessmentText = res.data.reportComments ,
 
-            console.log(this.joinUnits)
+              console.log(this.joinUnits)
           }
         })
       },
@@ -372,13 +497,32 @@
         console.log(this.content)
       },
 
-      openMessageBox() {
+      planPictureMessageBox() {
         this.dialogVisible = true
       },
-      goIndex(){
+      planAudioMessageBox(){
+        this.dialogPlanAudioVisible = true
+      },
+      goIndex() {
         this.$router.push({
-          name : `SandList`
+          name: `SandList`
         })
+      },
+      handlePictureCardPreview(file) {
+        this.dialogImageUrl = file.url;
+        console.log(file)
+        this.dialogVisiblePicture = true;
+      },
+      handlePictureCardPreviewPlanAudio (file){
+        console.log(file)
+        // let audio = new Audio()
+        // audio.src = file.audioUrl
+        // audio.play();
+        this.audioUrl = file.audioUrl
+        this.$refs.audio.play()
+      },
+      change(){
+
       }
     }
   }

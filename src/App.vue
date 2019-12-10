@@ -1,5 +1,6 @@
 <template>
-  <div id="app" :style="{ height: screenHeight + 'px', width: screenWidth + 'px' ,background: color }">
+  <div id="app" :style="{background: color }">
+    <!--<div id="app" :style="{ height: screenHeight + 'px', width: screenWidth + 'px' ,background: color }">-->
 <!--    <img src="./assets/logo.png">-->
     <div class="bar">
       <div style="padding-left:16px">应急演练管理子系统</div>

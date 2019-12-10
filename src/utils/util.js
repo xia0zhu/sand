@@ -8,10 +8,13 @@ export const util = {
         headers: {'Content-Type': 'multipart/form-data'}
       }
       const instance= axios.create({
-        withCredentials: true,
+        withCredentials: false,
+        baseURL : process.env.WEB_API ,
+        timeout : 6000
       })
-      let url = process.env.WEB_API
+      axios.defaults.baseURL =process.env.WEB_API;
       axios.defaults.timeout =  6000;
+      axios.defaults.withCredentials =true
       instance.post('drill/storage/create', fd )
         .then(response => {
           console.log(response)

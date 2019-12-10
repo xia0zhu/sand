@@ -99,11 +99,6 @@
         <div style="display: flex;margin: 10px">
           <div style="font-size: 14px;padding-top: 20px">预演计划</div>
           <div style="width: 56%;margin-left: 5%;">
-            <!--            <quill-editor ref="myTextEditor"-->
-            <!--               v-model="content"-->
-            <!--               :options="editorOption"-->
-            <!--               @blur="onEditorBlur($event)">-->
-            <!--            </quill-editor>-->
             <editor-bar v-model="planText" :isClear="isClear" @change="change"></editor-bar>
           </div>
         </div>
@@ -114,7 +109,7 @@
           <div class="btn" @click="planAudioMessageBox">
             <i class="el-icon-headset"><span style="font-size: 14px">音频</span></i>
           </div>
-          <div class="btn">
+          <div class="btn" @click="planVideoMessageBox">
             <i class="el-icon-picture"><span style="font-size: 14px">视频</span></i>
           </div>
           <div class="btn">
@@ -130,11 +125,6 @@
         <div style="display: flex;margin: 10px;">
           <div style="font-size: 14px;padding-top: 20px">过程记录</div>
           <div style="width: 56%;margin-left: 5%;">
-            <!--            <quill-editor ref="myTextEditor"-->
-            <!--               v-model="content"-->
-            <!--               :options="editorOption"-->
-            <!--               @blur="onEditorBlur($event)">-->
-            <!--            </quill-editor>-->
             <editor-bar v-model="progressText" :isClear="isClear" @change="change"></editor-bar>
           </div>
         </div>
@@ -158,11 +148,6 @@
         <div style="display: flex;margin: 10px">
           <div style="font-size: 14px;padding-top: 20px">演讲总结</div>
           <div style="width: 56%;margin-left: 5%;">
-            <!--            <quill-editor ref="myTextEditor"-->
-            <!--               v-model="content"-->
-            <!--               :options="editorOption"-->
-            <!--               @blur="onEditorBlur($event)">-->
-            <!--            </quill-editor>-->
             <editor-bar v-model="finalText" :isClear="isClear" @change="change"></editor-bar>
           </div>
         </div>
@@ -186,11 +171,6 @@
         <div style="display: flex;margin: 10px;">
           <div style="font-size: 14px;padding-top: 20px">预演评估</div>
           <div style="width: 56%;margin-left: 5%;">
-            <!--            <quill-editor ref="myTextEditor"-->
-            <!--               v-model="content"-->
-            <!--               :options="editorOption"-->
-            <!--               @blur="onEditorBlur($event)">-->
-            <!--            </quill-editor>-->
             <editor-bar v-model="assessmentText" :isClear="isClear" @change="change"></editor-bar>
           </div>
         </div>
@@ -212,13 +192,13 @@
       width="60%"
       :before-close="handleClose">
       <el-upload
-        style="text-align: left"
+        style="text-align: left;"
         action=none
         list-type="picture-card"
-        :file-list="fileList"
+        :file-list="fileListPlanPicture"
         with-credentials
         :show-file-list="true"
-        :before-upload="beforeUpload"
+        :before-upload="beforeUploadPicture"
       >
         <i class="el-icon-plus"></i>
         <div slot="file" slot-scope="{file}">
@@ -254,15 +234,14 @@
       :visible.sync="dialogPlanAudioVisible"
       width="60%"
       :before-close="handleClose2">
-      <audio ref="audio" :src="audioUrl"></audio>
       <el-upload
         style="text-align: left"
         action=none
         list-type="picture-card"
-        :file-list="fileList2"
+        :file-list="fileListPlanAudio"
         with-credentials
         :show-file-list="true"
-        :before-upload="beforeUpload"
+        :before-upload="beforeUploadAudio"
       >
         <i class="el-icon-plus"></i>
         <div slot="file" slot-scope="{file}">
@@ -289,23 +268,68 @@
       </span>
         </div>
       </el-upload>
-      <!--<el-dialog :visible.sync="dialogVisibleAudio">-->
-        <!--<img width="100%" :src="dialogImageUrlAudio" alt="">-->
-      <!--</el-dialog>-->
-
-            <div slot="footer" class="dialog-footer">
-<audio src="http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3" id="eventAudio"></audio>
-        </div>
     </el-dialog>
 
+    <!--视频弹框-->
+    <el-dialog
+      title="视频资料"
+      style="text-align: left"
+      :visible.sync="dialogPlanVideoVisible"
+      width="60%"
+      :before-close="handleClose3">
+      <el-upload
+        style="text-align: left"
+        action=none
+        list-type="picture-card"
+        :file-list="fileListPlanvVideo"
+        with-credentials
+        :show-file-list="true"
+        :before-upload="beforeUploadVideo"
+      >
+        <i class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <video
+            class="el-upload-list__item-thumbnail"
+            :src="file.videoUrl" alt=""
+          ></video>
+
+          <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreviewPlanVideo(file)"
+        >
+          <i class="el-icon-caret-right"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemove(file)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+        </div>
+      </el-upload>
+    </el-dialog>
     <!--图片点击放大弹框-->
-    <el-dialog :visible.sync="dialogVisiblePicture">
-      <img width="100%" :src="dialogImageUrl" alt="">
+    <el-dialog :visible.sync="dialogVisiblePicture" :title="playTitle" style="text-align: left">
+      <img width="100%" :src="dialogImageUrl" alt="" style=" width: 450px ;height: 450px">
     </el-dialog>
 
 <!--    音频点击放大播放-->
-    <el-dialog :visible.sync="dialogVisibleAudioModel">
+    <el-dialog :visible.sync="dialogVisibleAudioModel" :title="playTitle" style="text-align: left">
+      <audio ref='audio' controls="controls">
+        Your browser does not support the audio element.
+      </audio>
+    </el-dialog>
 
+    <!--视频点击放大播放-->
+    <el-dialog :visible.sync="dialogVisibleVideoModel" :title="playTitle" style="text-align: left">
+      <video ref='video' controls="controls" width="450" height="450">
+        Your browser does not support the audio element.
+      </video>
     </el-dialog>
   </div>
 </template>
@@ -324,24 +348,35 @@
   export default {
     data() {
       return {
+        playTitle : "" ,
+        dialogImageUrl : '' ,
         audioUrl : '' ,
         dialogVisibleAudioModel : false ,
+        dialogVisibleVideoModel  : false ,
         disabled: false,
-        fileList: [
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'}
+        fileListPlanPicture: [
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
+          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'}
         ],
-        fileList2: [
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
+        fileListPlanAudio: [
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
+        ],
+        fileListPlanvVideo: [
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
+          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
         ],
         regionoptions: [
           {
@@ -370,6 +405,7 @@
         dialogVisible: false, // 图片
         dialogVisiblePicture: false,
         dialogPlanAudioVisible : false ,//音频
+        dialogPlanVideoVisible : false , //视频
         dialogVisibleAudio : false ,
         isClear: false,
         detail: "",
@@ -446,29 +482,66 @@
       this.getData(this.id)
     },
     methods: {
-      imgBroadcastChange(file, fileList) {
-        this.file2 = file.raw;
-        this.fileName = file.name;
-      },
-      beforeUpload(file) {
+      //音频上传upload
+      beforeUploadAudio(file){
+        var testmsg = /^audio\/(x-m4a|mp3)$/.test(file.type)
+        if (!testmsg) {
+          this.$message.error('上传音频格式不对!')
+          return
+        }
         util.upload(file).then(res => {
-          debugger
+            if (res.errno = 200) {
+              let obj = {}
+              obj.name = res.name
+              obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
+              obj.audioUrl = res.url
+              this.fileListPlanAudio.push(obj)
+            }
+        })
+      },
+
+      //视频上传upload
+      beforeUploadVideo(file){
+        var testmsg = /^video\/(x-matroska|mp4|x-ms-wmv)$/.test(file.type)
+        if (!testmsg) {
+          this.$message.error('上传视频格式不对!')
+          return
+        }
+        util.upload(file).then(res => {
+          if (res.errno = 200) {
+            let obj = {}
+            obj.name = res.name
+            obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
+            obj.videoUrl = res.url
+            this.fileListPlanvVideo.push(obj)
+          }
+        })
+      },
+
+      //图片上传upload
+      beforeUploadPicture(file) {
+        var testmsg = /^image\/(jpeg|png|jpg)$/.test(file.type)
+        if (!testmsg) {
+          this.$message.error('上传图片格式不对!')
+          return
+        }
+        util.upload(file).then(res => {
           console.log(res)
           if (res.errno = 200) {
             let obj = {}
             obj.name = res.name
             obj.url = res.url
-            this.fileList.push(obj)
+            this.fileListPlanPicture.push(obj)
           }
         })
-        console.log(this.fileList)
-
-
+        console.log(this.fileListPlanPicture)
       },
 
       changeStep(id) {
         this.form.step = id
       },
+
+      //获取id信息
       getData(id) {
         this.$get(api.detail + "?id=" + id).then(res => {
           console.log(res)
@@ -499,6 +572,7 @@
           }
         })
       },
+
       onEditorBlur: function () {
         console.log(this.content)
       },
@@ -509,6 +583,9 @@
       planAudioMessageBox(){
         this.dialogPlanAudioVisible = true
       },
+      planVideoMessageBox (){
+        this.dialogPlanVideoVisible = true
+      },
       goIndex() {
         this.$router.push({
           name: `SandList`
@@ -517,19 +594,40 @@
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         console.log(file)
+        this.playTitle = file.name
         this.dialogVisiblePicture = true;
       },
       handlePictureCardPreviewPlanAudio (file){
         console.log(file)
-        // let audio = new Audio()
-        // audio.src = file.audioUrl
-        // audio.play();
-        this.audioUrl = file.audioUrl
-        this.$refs.audio.play()
+        console.log(file.audioUrl)
+        this.dialogVisibleAudioModel = true
+        this.$nextTick(() => {
+          this.playTitle = file.name
+          this.$refs.audio.src = file.audioUrl
+        })
+      },
+      handlePictureCardPreviewPlanVideo (file){
+        this.dialogVisibleVideoModel = true
+        this.$nextTick(() => {
+          this.playTitle = file.name
+        this.$refs.video.src = file.videoUrl
+        })
       },
       change(){
 
-      }
+      },
+
+      handleClose (){
+        this.dialogVisible = false
+      },
+
+      handleClose2 (){
+        this.dialogPlanAudioVisible = false
+      },
+      handleClose3 (){
+        this.dialogPlanVideoVisible = false
+      },
+
     }
   }
 </script>

@@ -133,7 +133,7 @@
         </div>
         <div class="btnlist">
           <div class="btn">
-            <i class="iconfont icon-tupian"><span style="font-size: 14px;padding-left: 2px;">图片</span></i>          </div>
+            <i class="iconfont icon-tupian"><span style="font-size: 14px;padding-left: 2px;">图片</span></i></div>
           <div class="btn">
             <i class="iconfont icon-audio"><span style="font-size: 14px;padding-left: 2px">音频</span></i>
           </div>
@@ -209,7 +209,8 @@
             :src="file.url" alt=""
           >
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
-          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}
+          </div>
           <span class="el-upload-list__item-actions">
         <span
           class="el-upload-list__item-preview"
@@ -252,7 +253,8 @@
             :src="file.url" alt=""
           >
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
-          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}
+          </div>
           <span class="el-upload-list__item-actions">
         <span
           class="el-upload-list__item-preview"
@@ -296,7 +298,8 @@
           ></video>
 
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
-          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}
+          </div>
           <span class="el-upload-list__item-actions">
         <span
           class="el-upload-list__item-preview"
@@ -339,13 +342,21 @@
             :src="file.url" alt=""
           >
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
-          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}
+          </div>
           <span class="el-upload-list__item-actions">
-        <span
-          class="el-upload-list__item-preview"
-          @click="handlePictureCardPreviewPlanAudio(file)"
-        >
-          <i class="el-icon-caret-right"></i>
+<!--        <span-->
+<!--          class="el-upload-list__item-preview"-->
+<!--          @click="handlePictureCardPreviewPlanAudio(file)"-->
+<!--        >-->
+<!--          <i class="el-icon-caret-right"></i>-->
+<!--        </span>-->
+                 <span
+                   v-if="!disabled"
+                   class="el-upload-list__item-delete"
+                   @click="handleDownloadAudio(file)"
+                 >
+          <i class="el-icon-download"></i>
         </span>
         <span
           v-if="!disabled"
@@ -365,7 +376,7 @@
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
 
-<!--    音频点击放大播放-->
+    <!--    音频点击放大播放-->
     <el-dialog :visible.sync="dialogVisibleAudioModel" :title="playTitle" style="text-align: left">
       <audio ref='audio' controls="controls">
       </audio>
@@ -389,11 +400,11 @@
   export default {
     data() {
       return {
-        playTitle : "" ,
-        dialogImageUrl : '' ,
-        audioUrl : '' ,
-        dialogVisibleAudioModel : false ,
-        dialogVisibleVideoModel  : false ,
+        playTitle: "",
+        dialogImageUrl: '',
+        audioUrl: '',
+        dialogVisibleAudioModel: false,
+        dialogVisibleVideoModel: false,
         disabled: false,
         fileListPlanPicture: [],
         fileListPlanAudio: [],
@@ -425,10 +436,10 @@
         ],
         dialogVisible: false, // 图片
         dialogVisiblePicture: false,
-        dialogPlanAudioVisible : false ,//音频
-        dialogPlanVideoVisible : false , //视频
-        dialogPlanAnnexVisible : false , //附件
-        dialogVisibleAudio : false ,
+        dialogPlanAudioVisible: false,//音频
+        dialogPlanVideoVisible: false, //视频
+        dialogPlanAnnexVisible: false, //附件
+        dialogVisibleAudio: false,
         isClear: false,
         detail: "",
         editorOption: {
@@ -505,37 +516,37 @@
     },
     methods: {
       //附件上传
-      beforeUploadAnnex (file) {
+      beforeUploadAnnex(file) {
         util.upload(file).then(res => {
           if (res.errno = 200) {
             let obj = {}
             obj.name = res.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/kbzrr6wfhylj35ycjeu8.png'
-            obj.audioUrl = res.url
+            obj.annexUrl = res.url
             this.fileListPlanvAnnex.push(obj)
           }
         })
       },
       //音频上传upload
-      beforeUploadAudio(file){
+      beforeUploadAudio(file) {
         var testmsg = /^audio\/(x-m4a|mp3)$/.test(file.type)
         if (!testmsg) {
           this.$message.error('上传音频格式不对!')
           return
         }
         util.upload(file).then(res => {
-            if (res.errno = 200) {
-              let obj = {}
-              obj.name = res.name
-              obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-              obj.audioUrl = res.url
-              this.fileListPlanAudio.push(obj)
-            }
+          if (res.errno = 200) {
+            let obj = {}
+            obj.name = res.name
+            obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
+            obj.audioUrl = res.url
+            this.fileListPlanAudio.push(obj)
+          }
         })
       },
 
       //视频上传upload
-      beforeUploadVideo(file){
+      beforeUploadVideo(file) {
         var testmsg = /^video\/(x-matroska|mp4|x-ms-wmv)$/.test(file.type)
         if (!testmsg) {
           this.$message.error('上传视频格式不对!')
@@ -614,14 +625,14 @@
       planPictureMessageBox() {
         this.dialogVisible = true
       },
-      planAudioMessageBox(){
+      planAudioMessageBox() {
         this.dialogPlanAudioVisible = true
       },
-      planAnnexMessageBox(){
+      planAnnexMessageBox() {
         this.dialogPlanAnnexVisible = true
       },
 
-      planVideoMessageBox (){
+      planVideoMessageBox() {
         this.dialogPlanVideoVisible = true
       },
       goIndex() {
@@ -635,7 +646,7 @@
         this.playTitle = file.name
         this.dialogVisiblePicture = true;
       },
-      handlePictureCardPreviewPlanAudio (file){
+      handlePictureCardPreviewPlanAudio(file) {
         console.log(file)
         console.log(file.audioUrl)
         this.dialogVisibleAudioModel = true
@@ -644,65 +655,113 @@
           this.$refs.audio.src = file.audioUrl
         })
       },
-      handlePictureCardPreviewPlanVideo (file){
+      handlePictureCardPreviewPlanVideo(file) {
         this.dialogVisibleVideoModel = true
         this.$nextTick(() => {
           this.playTitle = file.name
-        this.$refs.video.src = file.videoUrl
+          this.$refs.video.src = file.videoUrl
         })
       },
-      change(){
+      change() {
 
       },
 
-      handleClose (){
+      handleClose() {
         this.dialogVisible = false
       },
-      handleClose4 (){
+      handleClose4() {
         this.dialogPlanAnnexVisible = false
       },
-      handleClose2 (){
+      handleClose2() {
         this.dialogPlanAudioVisible = false
       },
 
-      handleClose3 (){
+      handleClose3() {
         this.dialogPlanVideoVisible = false
       },
 
-      handleRemovePicture (file ,fileList){
+      handleRemovePicture(file, fileList) {
         console.log(file)
         console.log(fileList)
-        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        let index = fileList.findIndex((item) => item.uid == file.uid);
         console.log(index)
-        fileList.splice(index , 1)
+        fileList.splice(index, 1)
         this.fileListPlanPicture = fileList
       },
 
-      handleRemoveAudio (file ,fileList){
+      handleRemoveAudio(file, fileList) {
         console.log(file)
         console.log(fileList)
-        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        let index = fileList.findIndex((item) => item.uid == file.uid);
         console.log(index)
-        fileList.splice(index , 1)
+        fileList.splice(index, 1)
         this.fileListPlanAudio = fileList
       },
 
-      handleRemoveVideo(file ,fileList){
+      handleRemoveVideo(file, fileList) {
         console.log(file)
         console.log(fileList)
-        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        let index = fileList.findIndex((item) => item.uid == file.uid);
         console.log(index)
-        fileList.splice(index , 1)
+        fileList.splice(index, 1)
         this.fileListPlanvVideo = fileList
       },
 
-      handleRemoveAnnex(file ,fileList){
+      handleRemoveAnnex(file, fileList) {
         console.log(file)
         console.log(fileList)
-        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        let index = fileList.findIndex((item) => item.uid == file.uid);
         console.log(index)
-        fileList.splice(index , 1)
+        fileList.splice(index, 1)
         this.fileListPlanvAnnex = fileList
+      },
+
+      handleDownloadAudio(file){
+        console.log(file)
+        // var newUrl= "data:text/html;charset=utf-8,"+ encodeURI(file.annexUrl).replace(/#/g,"%23");
+        window.open(newUrl , "_blank");
+        // window.location.href = file.annexUrl
+        // this.fetchExportBill (file.annexUrl)
+      },
+
+      // 导出文件流
+      fetchExportBill(url, data = {}) {
+        console.log(url)
+        this.$axios.post(
+          url,//请求的url
+          {
+            'data':{}//请求数据
+          },
+          {
+            responseType:'arraybuffer'//服务器返回的数据类型
+          }
+        ).then((res)=>{
+          console.log(res)
+          //此处有个坑。这里用content保存文件流，最初是content=res，但下载的test.xls里的内容如下图1，
+          //检查了下才发现，后端对文件流做了一层封装，所以将content指向res.data即可
+          //另外，流的转储属于浅拷贝，所以此处的content转储仅仅是便于理解，并没有实际作用=_=
+          const content = res.data
+          const blob = new Blob([content])//构造一个blob对象来处理数据
+          const fileName = 'test.xls'
+
+          //对于<a>标签，只有 Firefox 和 Chrome（内核） 支持 download 属性
+          //IE10以上支持blob但是依然不支持download
+          if ('download' in document.createElement('a')) { //支持a标签download的浏览器
+            const link = document.createElement('a')//创建a标签
+            link.download = fileName//a标签添加属性
+            link.style.display = 'none'
+            link.href = URL.createObjectURL(blob)
+            document.body.appendChild(link)
+            link.click()//执行下载
+            URL.revokeObjectURL(link.href) //释放url
+            document.body.removeChild(link)//释放标签
+          } else { //其他浏览器
+            navigator.msSaveBlob(blob, fileName)
+          }
+
+        }).catch((err)=>{
+          console.log(err);
+        })
       },
 
     }

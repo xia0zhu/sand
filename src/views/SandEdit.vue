@@ -9,6 +9,7 @@
           </div>
         </div>
       </el-col>
+
       <el-col :span="13">
         <div style="display: flex;margin: 10px;align-items: center">
           <div style="font-size: 14px">预演类型</div>
@@ -24,6 +25,7 @@
           </div>
         </div>
       </el-col>
+
       <el-col :span="13">
         <div style="display: flex;margin: 10px;align-items: center">
           <div style="font-size: 14px">预演地区</div>
@@ -39,6 +41,7 @@
           </div>
         </div>
       </el-col>
+
       <el-col :span="13">
         <div style="display: flex;margin: 10px;align-items: center">
           <div style="font-size: 14px">组织单位</div>
@@ -104,19 +107,19 @@
         </div>
         <div class="btnlist">
           <div class="btn" @click="planPictureMessageBox">
-            <i class="el-icon-picture"><span style="font-size: 14px">图片</span></i>
+            <i class="iconfont icon-tupian"><span style="font-size: 14px;padding-left: 2px;">图片</span></i>
           </div>
           <div class="btn" @click="planAudioMessageBox">
-            <i class="el-icon-headset"><span style="font-size: 14px">音频</span></i>
+            <i class="iconfont icon-audio"><span style="font-size: 14px;padding-left: 2px">音频</span></i>
           </div>
           <div class="btn" @click="planVideoMessageBox">
-            <i class="el-icon-picture"><span style="font-size: 14px">视频</span></i>
+            <i class="iconfont icon-shipin"><span style="font-size: 14px;padding-left: 2px">视频</span></i>
+          </div>
+          <div class="btn" @click="planAnnexMessageBox">
+            <i class="iconfont icon-fujian"><span style="font-size: 14px;padding-left: 2px">附件</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">附件</span></i>
-          </div>
-          <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">沙盘</span></i>
+            <i class="iconfont icon-huodongliebiao"><span style="font-size: 14px;padding-left: 2px">沙盘</span></i>
           </div>
         </div>
       </el-col>
@@ -130,16 +133,15 @@
         </div>
         <div class="btnlist">
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">图片</span></i>
+            <i class="iconfont icon-tupian"><span style="font-size: 14px;padding-left: 2px;">图片</span></i>          </div>
+          <div class="btn">
+            <i class="iconfont icon-audio"><span style="font-size: 14px;padding-left: 2px">音频</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-headset"><span style="font-size: 14px">音频</span></i>
+            <i class="iconfont icon-shipin"><span style="font-size: 14px;padding-left: 2px">视频</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">视频</span></i>
-          </div>
-          <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">附件</span></i>
+            <i class="iconfont icon-fujian"><span style="font-size: 14px;padding-left: 2px">附件</span></i>
           </div>
         </div>
       </el-col>
@@ -153,16 +155,16 @@
         </div>
         <div class="btnlist">
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">图片</span></i>
+            <i class="iconfont icon-tupian"><span style="font-size: 14px;padding-left: 2px;">图片</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-headset"><span style="font-size: 14px">音频</span></i>
+            <i class="iconfont icon-audio"><span style="font-size: 14px;padding-left: 2px">音频</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">视频</span></i>
+            <i class="iconfont icon-shipin"><span style="font-size: 14px;padding-left: 2px">视频</span></i>
           </div>
           <div class="btn">
-            <i class="el-icon-picture"><span style="font-size: 14px">附件</span></i>
+            <i class="iconfont icon-fujian"><span style="font-size: 14px;padding-left: 2px">附件</span></i>
           </div>
         </div>
       </el-col>
@@ -218,7 +220,7 @@
         <span
           v-if="!disabled"
           class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
+          @click="handleRemovePicture(file ,fileListPlanPicture)"
         >
           <i class="el-icon-delete"></i>
         </span>
@@ -261,7 +263,7 @@
         <span
           v-if="!disabled"
           class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
+          @click="handleRemoveAudio(file , fileListPlanAudio)"
         >
           <i class="el-icon-delete"></i>
         </span>
@@ -298,14 +300,14 @@
           <span class="el-upload-list__item-actions">
         <span
           class="el-upload-list__item-preview"
-          @click="handlePictureCardPreviewPlanVideo(file)"
+          @click="handlePictureCardPreviewPlanVideo(file , dialogPlanVideoVisible)"
         >
           <i class="el-icon-caret-right"></i>
         </span>
         <span
           v-if="!disabled"
           class="el-upload-list__item-delete"
-          @click="handleRemove(file)"
+          @click="handleRemoveVideo(file , fileListPlanvVideo)"
         >
           <i class="el-icon-delete"></i>
         </span>
@@ -313,22 +315,65 @@
         </div>
       </el-upload>
     </el-dialog>
+
+    <!--附件弹框-->
+    <el-dialog
+      title="附件资料"
+      style="text-align: left"
+      :visible.sync="dialogPlanAnnexVisible"
+      width="60%"
+      :before-close="handleClose4">
+      <el-upload
+        style="text-align: left"
+        action=none
+        list-type="picture-card"
+        :file-list="fileListPlanvAnnex"
+        with-credentials
+        :show-file-list="true"
+        :before-upload="beforeUploadAnnex"
+      >
+        <i class="el-icon-plus"></i>
+        <div slot="file" slot-scope="{file}">
+          <img
+            class="el-upload-list__item-thumbnail"
+            :src="file.url" alt=""
+          >
+          <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
+          overflow: hidden;width: 95%;white-space: nowrap">{{file.name}}</div>
+          <span class="el-upload-list__item-actions">
+        <span
+          class="el-upload-list__item-preview"
+          @click="handlePictureCardPreviewPlanAudio(file)"
+        >
+          <i class="el-icon-caret-right"></i>
+        </span>
+        <span
+          v-if="!disabled"
+          class="el-upload-list__item-delete"
+          @click="handleRemoveAnnex(file , fileListPlanvAnnex)"
+        >
+          <i class="el-icon-delete"></i>
+        </span>
+      </span>
+        </div>
+      </el-upload>
+    </el-dialog>
+
+
     <!--图片点击放大弹框-->
-    <el-dialog :visible.sync="dialogVisiblePicture" :title="playTitle" style="text-align: left">
-      <img width="100%" :src="dialogImageUrl" alt="" style=" width: 450px ;height: 450px">
+    <el-dialog :visible.sync="dialogVisiblePicture" :title="playTitle" style="text-align: left;margin-top: -10vh">
+      <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
 
 <!--    音频点击放大播放-->
     <el-dialog :visible.sync="dialogVisibleAudioModel" :title="playTitle" style="text-align: left">
       <audio ref='audio' controls="controls">
-        Your browser does not support the audio element.
       </audio>
     </el-dialog>
 
     <!--视频点击放大播放-->
-    <el-dialog :visible.sync="dialogVisibleVideoModel" :title="playTitle" style="text-align: left">
-      <video ref='video' controls="controls" width="450" height="450">
-        Your browser does not support the audio element.
+    <el-dialog :visible.sync="dialogVisibleVideoModel" :title="playTitle" style="text-align: left;margin-top: -10vh">
+      <video ref='video' controls="controls">
       </video>
     </el-dialog>
   </div>
@@ -338,10 +383,6 @@
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
   import EditorBar from '@/components/wangEnduit'
-  // import {quillEditor} from 'vue-quill-editor'
-  // import 'quill/dist/quill.core.css';
-  // import 'quill/dist/quill.snow.css';
-  // import 'quill/dist/quill.bubble.css';
   import {api} from '@/api/api'
   import {util} from '@/utils/util'
 
@@ -354,30 +395,10 @@
         dialogVisibleAudioModel : false ,
         dialogVisibleVideoModel  : false ,
         disabled: false,
-        fileListPlanPicture: [
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/vecyjz8skpy0kar4g8ju.png'},
-          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'}
-        ],
-        fileListPlanAudio: [
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
-        ],
-        fileListPlanvVideo: [
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'food.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/d5rzek30ksu6yw1avnqf.mp3'},
-          // {name: 'foofoodfoodfoodfoodd.jpg', url: 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png' ,audioUrl :'http://47.99.113.181:1003/drill/storage/fetch/bnyerqj2y6vz50tiuvbc.mp3'}
-        ],
+        fileListPlanPicture: [],
+        fileListPlanAudio: [],
+        fileListPlanvVideo: [],
+        fileListPlanvAnnex: [],
         regionoptions: [
           {
             label: '长清区',
@@ -406,6 +427,7 @@
         dialogVisiblePicture: false,
         dialogPlanAudioVisible : false ,//音频
         dialogPlanVideoVisible : false , //视频
+        dialogPlanAnnexVisible : false , //附件
         dialogVisibleAudio : false ,
         isClear: false,
         detail: "",
@@ -474,14 +496,26 @@
     },
     components: {
       Treeselect,
-      // quillEditor ,
       EditorBar
     },
     mounted() {
+      this.$store.commit("change", '演练方案');
       this.id = this.$route.params.id
       this.getData(this.id)
     },
     methods: {
+      //附件上传
+      beforeUploadAnnex (file) {
+        util.upload(file).then(res => {
+          if (res.errno = 200) {
+            let obj = {}
+            obj.name = res.name
+            obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/kbzrr6wfhylj35ycjeu8.png'
+            obj.audioUrl = res.url
+            this.fileListPlanvAnnex.push(obj)
+          }
+        })
+      },
       //音频上传upload
       beforeUploadAudio(file){
         var testmsg = /^audio\/(x-m4a|mp3)$/.test(file.type)
@@ -583,6 +617,10 @@
       planAudioMessageBox(){
         this.dialogPlanAudioVisible = true
       },
+      planAnnexMessageBox(){
+        this.dialogPlanAnnexVisible = true
+      },
+
       planVideoMessageBox (){
         this.dialogPlanVideoVisible = true
       },
@@ -620,12 +658,51 @@
       handleClose (){
         this.dialogVisible = false
       },
-
+      handleClose4 (){
+        this.dialogPlanAnnexVisible = false
+      },
       handleClose2 (){
         this.dialogPlanAudioVisible = false
       },
+
       handleClose3 (){
         this.dialogPlanVideoVisible = false
+      },
+
+      handleRemovePicture (file ,fileList){
+        console.log(file)
+        console.log(fileList)
+        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        console.log(index)
+        fileList.splice(index , 1)
+        this.fileListPlanPicture = fileList
+      },
+
+      handleRemoveAudio (file ,fileList){
+        console.log(file)
+        console.log(fileList)
+        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        console.log(index)
+        fileList.splice(index , 1)
+        this.fileListPlanAudio = fileList
+      },
+
+      handleRemoveVideo(file ,fileList){
+        console.log(file)
+        console.log(fileList)
+        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        console.log(index)
+        fileList.splice(index , 1)
+        this.fileListPlanvVideo = fileList
+      },
+
+      handleRemoveAnnex(file ,fileList){
+        console.log(file)
+        console.log(fileList)
+        let index = fileList.findIndex((item)=>item.uid== file.uid);
+        console.log(index)
+        fileList.splice(index , 1)
+        this.fileListPlanvAnnex = fileList
       },
 
     }
@@ -641,12 +718,12 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-left: 12%;
+    margin-left: 13%;
     margin-bottom: 10px;
   }
 
   .btn {
-    margin: 0 5px;
+    margin-right: 15px;
     cursor: pointer;
   }
 </style>

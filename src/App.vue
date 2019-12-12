@@ -25,15 +25,19 @@ export default {
       screenWidth: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
       screenHeight: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight,
       color: '#E5EBFF' ,
-      currentname : ""
     }
   },
   mounted() {
-    this.currentname = localStorage.getItem('currentname') || '演练系统'
+    // this.currentname = localStorage.getItem('currentname') || '演练系统'
   },
   methods : {
     goSand(){
       window.location.href = 'http://47.99.113.181:1001/emergency-system/supermap/index.html#/';
+    }
+  },
+  computed : {
+    currentname:function (){
+      return this.$store.state.title
     }
   }
 }

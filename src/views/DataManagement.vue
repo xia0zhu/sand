@@ -155,6 +155,9 @@
           disabled: false
         }
       },
+       mounted (){
+         this.$store.commit("change", '材料管理');
+       },
       methods : {
         handleRemove(file) {
           console.log(file);

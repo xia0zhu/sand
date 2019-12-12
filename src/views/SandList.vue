@@ -105,25 +105,25 @@
           min-width="2">
         </el-table-column>
         <el-table-column
-          align="center"
+          align="left"
           prop="writePerson"
           label="创建人"
           min-width="1">
         </el-table-column>
         <el-table-column
           prop="createDate"
-          align="center"
+          align="left"
           label="创建时间"
           min-width="1">
         </el-table-column>
         <el-table-column
-          align="center"
+          align="left"
           prop="statusText"
           label="状态"
           min-width="1">
         </el-table-column>
         <el-table-column
-          align="center"
+          align="left"
           label="操作"
           min-width="1">
           <template slot-scope="scope">
@@ -147,7 +147,7 @@
     </el-row>
 
     <el-row class="line" @click.native="changeTableFlag">
-      <div ><i style="margin-right: 5px" class="el-icon-s-operation"></i>演练材料</div>
+      <div><i style="margin-right: 5px" class="el-icon-s-operation"></i>演练材料</div>
       <div style="position: absolute;right: 14px;font-size: 14px">
         <!--<el-button size="small" type="primary" @click="goSaveSand">新建演练</el-button>-->
         <div style="cursor: pointer" class="btn" v-on:click.stop="uploadMetrail">材料上传</div>
@@ -156,8 +156,7 @@
     <el-row style="background: #fff;margin: 0 10px" v-if="showBottomTable">
       <template slot="title">
         <div style="display: flex;">
-          <div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"
-                                                            class="el-icon-s-operation"></i><span>演练材料</span></div>
+          <div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px" class="el-icon-s-operation"></i><span>演练材料</span></div>
           <div style="position: absolute;right: 14px;font-size: 14px">
             <el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>
           </div>
@@ -180,7 +179,7 @@
           min-width="2">
         </el-table-column>
         <el-table-column
-          align="center"
+          align="left"
           label="演练名称"
           prop="name"
           min-width="1">
@@ -188,11 +187,11 @@
         <el-table-column
           prop="province"
           label="演练名称"
-          align="center"
+          align="left"
           min-width="1">
         </el-table-column>
         <el-table-column
-          align="center"
+          align="left"
           label="操作"
           min-width="1">
           <template slot-scope="scope">
@@ -215,68 +214,68 @@
     </el-row>
 
     <!--<el-row class="bottomTable">-->
-      <!--<el-collapse v-model="activeNames" @change="handleChange">-->
-        <!--<el-collapse-item name="1">-->
-          <!--<template slot="title">-->
-            <!--<div style="display: flex;">-->
-              <!--<div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"-->
-                 <!--class="el-icon-s-operation"></i><span>演练材料</span></div>-->
-              <!--<div style="position: absolute;right: 14px;font-size: 14px">-->
-                <!--<el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</template>-->
-          <!--<el-tabs v-model="activeName" @tab-click="" style="padding-left: 10px">-->
-            <!--<el-tab-pane label="自然灾害" name="first"></el-tab-pane>-->
-            <!--<el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
-            <!--<el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
-          <!--</el-tabs>-->
-          <!--<el-table-->
-            <!--:data="tableData2"-->
-            <!--:row-style="{fontSize:'14px',color:'#000'}"-->
-            <!--:header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"-->
-            <!--border>-->
-            <!--<el-table-column-->
-              <!--align="left"-->
-              <!--prop="date"-->
-              <!--label="演练名称"-->
-              <!--min-width="2">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column-->
-              <!--align="center"-->
-              <!--label="演练名称"-->
-              <!--prop="name"-->
-              <!--min-width="1">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column-->
-              <!--prop="province"-->
-              <!--label="演练名称"-->
-              <!--align="center"-->
-              <!--min-width="1">-->
-            <!--</el-table-column>-->
-            <!--<el-table-column-->
-              <!--align="center"-->
-              <!--label="操作"-->
-              <!--min-width="1">-->
-              <!--<template slot-scope="scope">-->
-                <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
-                <!--<el-button type="text" size="small" style="color: #f84e44;">删除</el-button>-->
-              <!--</template>-->
-            <!--</el-table-column>-->
-          <!--</el-table>-->
-          <!--<el-row class="pages">-->
-            <!--<el-pagination-->
-              <!--@size-change="handleSizeChange"-->
-              <!--@current-change="handleCurrentChange"-->
-              <!--:current-page="currentPage"-->
-              <!--:page-sizes="[100, 200, 300, 400]"-->
-              <!--:page-size="100"-->
-              <!--layout="total, sizes, prev, pager, next, jumper"-->
-              <!--:total="400">-->
-            <!--</el-pagination>-->
-          <!--</el-row>-->
-        <!--</el-collapse-item>-->
-      <!--</el-collapse>-->
+    <!--<el-collapse v-model="activeNames" @change="handleChange">-->
+    <!--<el-collapse-item name="1">-->
+    <!--<template slot="title">-->
+    <!--<div style="display: flex;">-->
+    <!--<div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"-->
+    <!--class="el-icon-s-operation"></i><span>演练材料</span></div>-->
+    <!--<div style="position: absolute;right: 14px;font-size: 14px">-->
+    <!--<el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</template>-->
+    <!--<el-tabs v-model="activeName" @tab-click="" style="padding-left: 10px">-->
+    <!--<el-tab-pane label="自然灾害" name="first"></el-tab-pane>-->
+    <!--<el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
+    <!--<el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
+    <!--</el-tabs>-->
+    <!--<el-table-->
+    <!--:data="tableData2"-->
+    <!--:row-style="{fontSize:'14px',color:'#000'}"-->
+    <!--:header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"-->
+    <!--border>-->
+    <!--<el-table-column-->
+    <!--align="left"-->
+    <!--prop="date"-->
+    <!--label="演练名称"-->
+    <!--min-width="2">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--align="center"-->
+    <!--label="演练名称"-->
+    <!--prop="name"-->
+    <!--min-width="1">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--prop="province"-->
+    <!--label="演练名称"-->
+    <!--align="center"-->
+    <!--min-width="1">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--align="center"-->
+    <!--label="操作"-->
+    <!--min-width="1">-->
+    <!--<template slot-scope="scope">-->
+    <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+    <!--<el-button type="text" size="small" style="color: #f84e44;">删除</el-button>-->
+    <!--</template>-->
+    <!--</el-table-column>-->
+    <!--</el-table>-->
+    <!--<el-row class="pages">-->
+    <!--<el-pagination-->
+    <!--@size-change="handleSizeChange"-->
+    <!--@current-change="handleCurrentChange"-->
+    <!--:current-page="currentPage"-->
+    <!--:page-sizes="[100, 200, 300, 400]"-->
+    <!--:page-size="100"-->
+    <!--layout="total, sizes, prev, pager, next, jumper"-->
+    <!--:total="400">-->
+    <!--</el-pagination>-->
+    <!--</el-row>-->
+    <!--</el-collapse-item>-->
+    <!--</el-collapse>-->
     <!--</el-row>-->
   </div>
 </template>
@@ -290,7 +289,7 @@
   export default {
     data() {
       return {
-        showBottomTable :true,
+        showBottomTable: true,
         value: null,
         name: "TableList",
         joinUnits: [],
@@ -345,12 +344,13 @@
       Treeselect,
     },
     mounted() {
+      this.$store.commit("change", '系统演练');
       this.getEchart()
       this.getData()
       this.search()
     },
     methods: {
-      changeTableFlag (){
+      changeTableFlag() {
         this.showBottomTable = !this.showBottomTable
       },
       search() {
@@ -462,10 +462,10 @@
           name: `SandSave`
         })
       },
-      uploadMetrail (){
+      uploadMetrail() {
         alert('材料上传')
       },
-      newStand (){
+      newStand() {
         alert('新建演练')
       }
     }
@@ -515,11 +515,12 @@
   .el-collapse-item__arrow {
     display: none !important;
   }
-  .btn{
-    width:78px;
+
+  .btn {
+    width: 78px;
     height: 32px;
     background-color: #006aff;
-    color:#fff;
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;

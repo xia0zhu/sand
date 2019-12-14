@@ -5,6 +5,7 @@ import SandList from '@/views/SandList'
 import SandEdit from '@/views/SandEdit'
 import SandSave from '@/views/saveSand'
 import DataManagement from '@/views/DataManagement'
+import SaveManagement from '@/views/SaveManagement'
 
 Vue.use(Router)
 
@@ -26,13 +27,18 @@ export default new Router({
       component: SandSave
     },
     {
+      path: '/mall',
+      name: 'SaveManagement',
+      component: SaveManagement
+    },
+    {
       path: '/edit/:id',
       name: 'SandEdit',
       component: SandEdit
     },
     {
-      path: '/management',
-      name: 'DataManagement',
+      path: '/stuff/:id',
+      name: 'stuffEdit',
       component: DataManagement
     }
   ]

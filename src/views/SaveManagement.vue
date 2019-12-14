@@ -374,7 +374,7 @@
         content: '',
         time: '',
         value: null,
-        name: "TableList",
+        name: "SaveManagement",
         joinUnits: [],
         organizationUnits: [],
         regionoptions: [],
@@ -431,9 +431,9 @@
     },
     components: {},
     mounted() {
-      this.$store.commit("change", '材料编辑');
-      this.id = this.$route.params.id
-      this.getData(this.id)
+      this.$store.commit("change", '新建材料');
+      // this.id = this.$route.params.id
+      // this.getData(this.id)
       this.getDataAll()
     },
     methods: {
@@ -463,7 +463,7 @@
 
         this.form.time = util.timeFun(this.form.time)
         let data = {
-          id: parseInt(that.id) ,
+          // id: parseInt(that.id) ,
           "images": that.plan.images,
           "attachments": that.plan.attachments,
           "audios": that.plan.audios,
@@ -474,7 +474,7 @@
           type : that.form.type ,
           unitCode : that.form.organization
         }
-        this.$post(api.matarialupdate, data).then(res => {
+        this.$post(api.matarialadd, data).then(res => {
           if (res.errno == 0) {
             this.loading = false
             this.$router.push({

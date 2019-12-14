@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 10px">
+  <div style="padding: 10px" v-loading="loadingAll">
     <el-row style="padding: 10px;background: #fff">
       <el-col :span="13">
         <div style="display: flex;margin: 10px;align-items: center">
@@ -88,11 +88,11 @@
           <div style="font-size: 14px">预演进度</div>
           <div style="width: 76%;margin-left: 5%;">
             <el-steps :active="form.step" align-center style="width: 100%">
-              <el-step @click.native="changeStep(1)" style="cursor:pointer" title="草拟" description=""></el-step>
-              <el-step @click.native="changeStep(2)" style="cursor:pointer" title="审核" description=""></el-step>
-              <el-step @click.native="changeStep(3)" style="cursor:pointer" title="演练" description=""></el-step>
-              <el-step @click.native="changeStep(4)" style="cursor:pointer" title="评估" description=""></el-step>
-              <el-step @click.native="changeStep(5)" style="cursor:pointer" title="完成" description=""></el-step>
+              <el-step @click.native="changeStep(0)" style="cursor:pointer" title="草拟" description=""></el-step>
+              <el-step @click.native="changeStep(1)" style="cursor:pointer" title="审核" description=""></el-step>
+              <el-step @click.native="changeStep(2)" style="cursor:pointer" title="演练" description=""></el-step>
+              <el-step @click.native="changeStep(3)" style="cursor:pointer" title="评估" description=""></el-step>
+              <el-step @click.native="changeStep(4)" style="cursor:pointer" title="完成" description=""></el-step>
             </el-steps>
           </div>
         </div>
@@ -488,7 +488,7 @@
         <div slot="file" slot-scope="{file}">
           <video
             class="el-upload-list__item-thumbnail"
-            :src="file.videoUrl" alt=""
+            :src="file.url" alt=""
           ></video>
 
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
@@ -535,7 +535,7 @@
         <div slot="file" slot-scope="{file}">
           <video
             class="el-upload-list__item-thumbnail"
-            :src="file.videoUrl" alt=""
+            :src="file.url" alt=""
           ></video>
 
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
@@ -582,7 +582,7 @@
         <div slot="file" slot-scope="{file}">
           <video
             class="el-upload-list__item-thumbnail"
-            :src="file.videoUrl" alt=""
+            :src="file.url" alt=""
           ></video>
 
           <div style="position: absolute;bottom: 0;text-overflow: ellipsis;
@@ -798,6 +798,7 @@
   export default {
     data() {
       return {
+        loadingAll : false ,
         loading: false,
         playTitle: "",
         dialogImageUrl: '',
@@ -957,6 +958,7 @@
       },
       submitForm (){
         //saveDetail
+        this.loadingAll = true
         // let that = this.getArr(this.fileListPlanPicture)
         let that = this
         this.plan = {
@@ -1008,10 +1010,12 @@
         }
         this.$post(api.updateProject , data).then(res=>{
           if(res.errno == 0){
+            this.loadingAll = false
             this.$router.push({
               name: `SandList`
             })
           }else{
+            this.loadingAll = false
             this.$message.error(res.errmsg);
           }
         })
@@ -1111,7 +1115,7 @@
             obj.name = res.data.name
             obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.audioUrl = res.data.url
+            obj.url = res.data.url
             this.fileListPlanAudio.push(obj)
           } else {
             this.loading = false
@@ -1136,7 +1140,7 @@
             obj.name = res.data.name
             obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.audioUrl = res.data.url
+            obj.url = res.data.url
             this.fileListProgressAudio.push(obj)
           } else {
             this.loading = false
@@ -1161,7 +1165,7 @@
             obj.name = res.data.name
             obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.audioUrl = res.data.url
+            obj.url = res.data.url
             this.fileListFinalAudio.push(obj)
           } else {
             this.loading = false
@@ -1187,7 +1191,7 @@
             obj.name = res.data.name
             obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.videoUrl = res.data.url
+            obj.url = res.data.url
             this.fileListPlanVideo.push(obj)
           } else {
             this.loading = false
@@ -1212,7 +1216,7 @@
             obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.videoUrl = res.data.url
+            obj.url = res.data.url
             this.fileListProgressVideo.push(obj)
           } else {
             this.loading = false
@@ -1237,7 +1241,7 @@
             obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
-            obj.videoUrl = res.data.url
+            obj.url = res.data.url
             this.fileListFinalVideo.push(obj)
           } else {
             this.loading = false
@@ -1475,11 +1479,11 @@
       // 音频放大弹框
       handlePictureCardPreviewPlanAudio(file) {
         console.log(file)
-        console.log(file.audioUrl)
+        console.log(file.url)
         this.dialogVisibleAudioModel = true
         this.$nextTick(() => {
           this.playTitle = file.name
-          this.$refs.audio.src = file.audioUrl
+          this.$refs.audio.src = file.url
         })
       },
       // 视频放大弹框
@@ -1487,7 +1491,7 @@
         this.dialogVisibleVideoModel = true
         this.$nextTick(() => {
           this.playTitle = file.name
-          this.$refs.video.src = file.videoUrl
+          this.$refs.video.src = file.url
         })
       },
       change() {

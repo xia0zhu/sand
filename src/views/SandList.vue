@@ -12,7 +12,6 @@
                 type="daterange"
                 range-separator="—"
                 @change="timeSelect"
-                @close="timeClose"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
               </el-date-picker>
@@ -165,10 +164,10 @@
           </div>
         </div>
       </template>
-      <el-tabs v-model="activeName" @tab-click="" style="padding-left: 10px">
-        <el-tab-pane label="自然灾害" name="first"></el-tab-pane>
-        <el-tab-pane label="事故灾害" name="second"></el-tab-pane>
-        <el-tab-pane label="公共卫生" name="third"></el-tab-pane>
+      <el-tabs v-model="matarialCode" @tab-click="getMatarialList" style="padding-left: 10px">
+        <el-tab-pane v-for="(item , index) in matarialArr" :label="item.value" :key="item.code" :name="item.code"></el-tab-pane>
+<!--        <el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
+<!--        <el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
       </el-tabs>
       <el-table
         :data="tableData2"
@@ -177,18 +176,18 @@
         border>
         <el-table-column
           align="left"
-          prop="date"
+          prop="title"
           label="演练名称"
           min-width="2">
         </el-table-column>
         <el-table-column
           align="left"
           label="演练名称"
-          prop="name"
+          prop="unitValue"
           min-width="1">
         </el-table-column>
         <el-table-column
-          prop="province"
+          prop="creationDate"
           label="演练名称"
           align="left"
           min-width="1">
@@ -205,13 +204,13 @@
       </el-table>
       <el-row class="pages">
         <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          @size-change="handleSizeChange2"
+          @current-change="handleCurrentChange2"
+          :current-page="currentPage2"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="pagesSize2"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total="totalLists2">
         </el-pagination>
       </el-row>
     </el-row>
@@ -292,6 +291,7 @@
   export default {
     data() {
       return {
+        matarialArr : [] ,
         showBottomTable: true,
         value: null,
         name: "TableList",
@@ -309,40 +309,15 @@
         },
         options: [],
         tableData: [],
-        tableData2: [{
-          date: '某山体泥石流滑坡演练',
-          name: 'XXX警官',
-          province: '2016-05-04',
-          city: '初审',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '某山体泥石流滑坡演练',
-          name: 'XXX警官',
-          province: '2016-05-04',
-          city: '初审',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '某山体泥石流滑坡演练',
-          name: 'XXX警官',
-          province: '2016-05-04',
-          city: '初审',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '某山体泥石流滑坡演练',
-          name: 'XXX警官',
-          province: '2016-05-04',
-          city: '初审',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }],
-        currentPage: 1,
+        tableData2: [],
         activeNames: ['1'],
-        activeName: 'first',
+        matarialCode: '',
+        currentPage: 1,
         totalLists: 0,
         pagesSize: 10,
+        currentPage2: 1,
+        totalLists2: 0,
+        pagesSize2: 10,
       }
     },
     components: {
@@ -353,6 +328,7 @@
       this.getEchart()
       this.getData()
       this.search()
+      this.getMatarialArr()
     },
     watch: {
       'form.time': function (val) {
@@ -364,12 +340,38 @@
       }
     },
     methods: {
+      getMatarialArr (){
+        let that = this
+        this.$get(api.getMatarialArr).then(res=>{
+          if(res.errno == 0){
+            this.matarialArr = res.data.archivedDataTypes
+            this.matarialCode = res.data.archivedDataTypes[0].code
+            that.getMatarialList ()
+          }
+        })
+      },
+      getMatarialList (){
+        let that = this
+        let data = {
+          archivedDataType : that.matarialCode ,
+          pageNum : that.currentPage2 ,
+          pageSize : that.pagesSize2
+        }
+        this.$post(api.getMatarialList , data).then(res=>{
+          if(res.errno == 0){
+            for (let item of res.data.archivedDataList){
+              item.creationDate = util.timeFun(item.creationDate)
+            }
+            this.totalLists2 = res.data.total
+            this.tableData2 = res.data.archivedDataList
+          }
+        })
+
+      },
       changeTableFlag() {
         this.showBottomTable = !this.showBottomTable
       },
-      timeClose() {
-        debugger
-      },
+
       timeSelect(time) {
         this.form.startDate = util.timeFun(time[0])
         this.form.endDate = util.timeFun(time[1])
@@ -383,6 +385,7 @@
           startDate: that.form.startDate,
           endDate: that.form.endDate,
           pageNum: that.currentPage,
+          // pageSize : 100 ,
           pageSize: that.pagesSize,
           projectType: that.form.type,
           unit: that.form.part == null || that.form.part.length == 0 ? [] : that.form.part,
@@ -402,6 +405,16 @@
           }
         })
         console.log(this.form)
+      },
+      handleClick (item){
+        let id = item.id
+        // let id = 16
+        this.$router.push({
+          name: `stuffEdit`,
+          params: {
+            id: id
+          }
+        })
       },
       goEdit(item) {
         let id = item.id
@@ -427,6 +440,16 @@
         console.log(`当前页: ${val}`);
         this.currentPage = val
         this.search()
+      },
+      handleSizeChange2(val) {
+        console.log(`每页 ${val} 条`);
+        this.pagesSize2 = val
+        this.getMatarialList()
+      },
+      handleCurrentChange2(val) {
+        console.log(`当前页: ${val}`);
+        this.currentPage2 = val
+        this.getMatarialList()
       },
       getEchart() {
         var myChart = this.$echarts.init(document.getElementById('main'));
@@ -494,10 +517,16 @@
         })
       },
       uploadMetrail() {
-        alert('材料上传')
+        this.$router.push({
+          name: `SaveManagement`
+        })
+
       },
       newStand() {
-        alert('新建演练')
+        // alert('新建演练')
+        this.$router.push({
+          name: `SandSave`
+        })
       }
     }
   }

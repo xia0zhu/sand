@@ -1043,6 +1043,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/kbzrr6wfhylj35ycjeu8.png'
             obj.annexUrl = res.data.url
             this.fileListPlanAnnex.push(obj)
@@ -1061,6 +1062,7 @@
           if (res.errno == 0) {
             this.loading = false
             let obj = {}
+            obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/kbzrr6wfhylj35ycjeu8.png'
             obj.annexUrl = res.data.url
@@ -1080,6 +1082,7 @@
           if (res.errno == 0) {
             this.loading = false
             let obj = {}
+            obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/kbzrr6wfhylj35ycjeu8.png'
             obj.annexUrl = res.data.url
@@ -1106,6 +1109,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.audioUrl = res.data.url
             this.fileListPlanAudio.push(obj)
@@ -1130,6 +1134,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.audioUrl = res.data.url
             this.fileListProgressAudio.push(obj)
@@ -1154,6 +1159,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.audioUrl = res.data.url
             this.fileListFinalAudio.push(obj)
@@ -1179,6 +1185,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.videoUrl = res.data.url
             this.fileListPlanVideo.push(obj)
@@ -1202,6 +1209,7 @@
           if (res.errno == 0) {
             this.loading = false
             let obj = {}
+            obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.videoUrl = res.data.url
@@ -1226,6 +1234,7 @@
           if (res.errno == 0) {
             this.loading = false
             let obj = {}
+            obj.fileId  = res.data.id
             obj.name = res.data.name
             obj.url = 'http://47.99.113.181:1003/drill/storage/fetch/o6b4rx8lwsvfrmxwww6q.png'
             obj.videoUrl = res.data.url
@@ -1251,10 +1260,12 @@
         util.upload(file).then(res => {
           console.log(res)
           if (res.errno == 0) {
+
             this.loading = false
             let obj = {}
             obj.name = res.data.name
             obj.url = res.data.url
+            obj.fileId  = res.data.id
             this.fileListPlanPicture.push(obj)
           } else {
             this.loading = false
@@ -1278,7 +1289,9 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = res.data.url
+            obj.fileId  = res.data.id
             this.fileListProgressPicture.push(obj)
           } else {
             this.loading = false
@@ -1302,6 +1315,7 @@
             this.loading = false
             let obj = {}
             obj.name = res.data.name
+            obj.fileId  = res.data.id
             obj.url = res.data.url
             this.fileListFinalPicture.push(obj)
           } else {

@@ -11,6 +11,8 @@
                 v-model="form.time"
                 type="daterange"
                 range-separator="—"
+                @change="timeSelect"
+                @close="timeClose"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
               </el-date-picker>
@@ -20,8 +22,8 @@
                 <el-option
                   v-for="item in organizationUnits"
                   :key="item.id"
-                  :label="item.unitName"
-                  :value="item.id">
+                  :label="item.value"
+                  :value="item.code">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -31,7 +33,7 @@
                   v-for="item in planTypes"
                   :key="item.id"
                   :label="item.value"
-                  :value="item.id">
+                  :value="item.code">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -100,25 +102,25 @@
         border>
         <el-table-column
           align="left"
-          prop="planName"
+          prop="projectName"
           label="演练名称"
           min-width="2">
         </el-table-column>
         <el-table-column
           align="left"
-          prop="writePerson"
+          prop="createdBy"
           label="创建人"
           min-width="1">
         </el-table-column>
         <el-table-column
-          prop="createDate"
+          prop="creationDate"
           align="left"
           label="创建时间"
           min-width="1">
         </el-table-column>
         <el-table-column
           align="left"
-          prop="statusText"
+          prop="statusValue"
           label="状态"
           min-width="1">
         </el-table-column>
@@ -156,7 +158,8 @@
     <el-row style="background: #fff;margin: 0 10px" v-if="showBottomTable">
       <template slot="title">
         <div style="display: flex;">
-          <div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px" class="el-icon-s-operation"></i><span>演练材料</span></div>
+          <div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"
+                                                            class="el-icon-s-operation"></i><span>演练材料</span></div>
           <div style="position: absolute;right: 14px;font-size: 14px">
             <el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>
           </div>
@@ -283,7 +286,7 @@
 <script>
   import Treeselect from "@riophae/vue-treeselect";
   import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
+  import {util} from '@/utils/util'
   import {api} from '@/api/api'
 
   export default {
@@ -300,7 +303,9 @@
           time: '',
           type: "",
           part: null,
-          key: ''
+          key: '',
+          startDate: '',
+          endDate: ''
         },
         options: [],
         tableData: [],
@@ -349,25 +354,51 @@
       this.getData()
       this.search()
     },
+    watch: {
+      'form.time': function (val) {
+        let that = this
+        if (val == null) {
+          that.form.startDate = "" ,
+            that.form.endDate = ""
+        }
+      }
+    },
     methods: {
       changeTableFlag() {
         this.showBottomTable = !this.showBottomTable
       },
+      timeClose() {
+        debugger
+      },
+      timeSelect(time) {
+        this.form.startDate = util.timeFun(time[0])
+        this.form.endDate = util.timeFun(time[1])
+      },
       search() {
         let that = this
+        console.log(that.form.part)
+        console.log(that.form.startDate)
+        console.log(that.form.part)
         let data = {
-          page: that.currentPage,
-          limit: that.pagesSize,
-          planType: that.form.type,
-          joinUnit: that.form.part == null || that.form.part.length == 0 ?
-            "" : that.form.part.join(','),
-          organizationUnit: that.form.region,
-          text: that.form.key
+          startDate: that.form.startDate,
+          endDate: that.form.endDate,
+          pageNum: that.currentPage,
+          pageSize: that.pagesSize,
+          projectType: that.form.type,
+          unit: that.form.part == null || that.form.part.length == 0 ? [] : that.form.part,
+          projectArea: that.form.region,
+          keyWord: that.form.key
         }
-        this.$get(api.getTableList, data).then(res => {
-          if (res.errno == 200) {
-            this.tableData = res.data.list
+        this.$post(api.getTableList, data).then(res => {
+          if (res.errno == 0) {
+            for (let item of res.data.projectList) {
+              item.creationDate = util.timeFun(item.creationDate)
+            }
+            this.tableData = res.data.projectList
+            console.log(res.data)
             this.totalLists = res.data.total
+            this.pagesSize = res.data.pageSize
+            this.currentPage = res.data.pageNum
           }
         })
         console.log(this.form)
@@ -444,13 +475,13 @@
         this.$get(api.preparedData).then(res => {
           console.log(res)
           let joinUnits = []
-          this.planTypes = res.data.planTypes
+          this.planTypes = res.data.projectTypes
           // this.joinUnits = res.data.joinUnits
-          this.organizationUnits = res.data.organizationUnits
-          for (let item of res.data.joinUnits) {
+          this.organizationUnits = res.data.projectAreas
+          for (let item of res.data.units) {
             let obj = {}
-            obj.id = item.id
-            obj.label = item.unitName
+            obj.id = item.code
+            obj.label = item.value
             joinUnits.push(obj)
           }
           this.joinUnits = joinUnits

@@ -36,10 +36,10 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <div style="display: flex;margin: 10px 0 10px 10px;align-items: center;width:100%">
-              <div style="font-size: 16px;margin-right:10%;">演练单位</div>
-              <div  style="width: 60%;margin-right: 10%;flex:1">
-                <treeselect style="font-size: 14px" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
+            <div style="display: flex;margin: 10px 10px 10px 10px;align-items: center;width:100%">
+              <div style="font-size: 16px;">演练单位</div>
+              <div  style="flex:1">
+                <treeselect style="font-size: 14px;width: 58%;float:right;margin-right:12%" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
                             :options="joinUnits"/>
               </div>
             </div>

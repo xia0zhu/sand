@@ -128,9 +128,15 @@
           label="操作"
           min-width="1">
           <template slot-scope="scope">
+<<<<<<< HEAD
             <el-button @click="goEdit(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
             <el-button type="text" size="small" style="color: #30713f;">导出</el-button>
             <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+=======
+            <el-button @click="goEdit(scope.row)" type="text" size="small">查看</el-button>
+            <el-button type="text" size="small" @click="goPrint(scope.row)">导出</el-button>
+            <el-button @click="delete1(scope.row , 1)" type="text" size="small" style="color: #f84e44;">删除</el-button>
+>>>>>>> 9dbe1218665c55faed30db80151fac3354479774
           </template>
         </el-table-column>
       </el-table>
@@ -196,8 +202,13 @@
           label="操作"
           min-width="1">
           <template slot-scope="scope">
+<<<<<<< HEAD
             <el-button @click="handleClick(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
             <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+=======
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="delete2(scope.row , 2)" type="text" size="small" style="color: #f84e44;">删除</el-button>
+>>>>>>> 9dbe1218665c55faed30db80151fac3354479774
           </template>
         </el-table-column>
       </el-table>
@@ -214,8 +225,87 @@
         </el-pagination>
       </el-row>
     </el-row>
+<<<<<<< HEAD
 
  
+=======
+    <el-dialog
+      title="提示"
+      :visible.sync="isDelete"
+      width="30%"
+      style="text-align: left"
+      :before-close="deleteClose">
+      <span style="padding-left: 35%;font-size: 20px">是否删除该信息!</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="deleteClose">取 消</el-button>
+    <el-button type="primary" @click="suredelete">确 定</el-button>
+  </span>
+    </el-dialog>
+    <!--<el-row class="bottomTable">-->
+    <!--<el-collapse v-model="activeNames" @change="handleChange">-->
+    <!--<el-collapse-item name="1">-->
+    <!--<template slot="title">-->
+    <!--<div style="display: flex;">-->
+    <!--<div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"-->
+    <!--class="el-icon-s-operation"></i><span>演练材料</span></div>-->
+    <!--<div style="position: absolute;right: 14px;font-size: 14px">-->
+    <!--<el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</template>-->
+    <!--<el-tabs v-model="activeName" @tab-click="" style="padding-left: 10px">-->
+    <!--<el-tab-pane label="自然灾害" name="first"></el-tab-pane>-->
+    <!--<el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
+    <!--<el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
+    <!--</el-tabs>-->
+    <!--<el-table-->
+    <!--:data="tableData2"-->
+    <!--:row-style="{fontSize:'14px',color:'#000'}"-->
+    <!--:header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"-->
+    <!--border>-->
+    <!--<el-table-column-->
+    <!--align="left"-->
+    <!--prop="date"-->
+    <!--label="演练名称"-->
+    <!--min-width="2">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--align="center"-->
+    <!--label="演练名称"-->
+    <!--prop="name"-->
+    <!--min-width="1">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--prop="province"-->
+    <!--label="演练名称"-->
+    <!--align="center"-->
+    <!--min-width="1">-->
+    <!--</el-table-column>-->
+    <!--<el-table-column-->
+    <!--align="center"-->
+    <!--label="操作"-->
+    <!--min-width="1">-->
+    <!--<template slot-scope="scope">-->
+    <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+    <!--<el-button type="text" size="small" style="color: #f84e44;">删除</el-button>-->
+    <!--</template>-->
+    <!--</el-table-column>-->
+    <!--</el-table>-->
+    <!--<el-row class="pages">-->
+    <!--<el-pagination-->
+    <!--@size-change="handleSizeChange"-->
+    <!--@current-change="handleCurrentChange"-->
+    <!--:current-page="currentPage"-->
+    <!--:page-sizes="[100, 200, 300, 400]"-->
+    <!--:page-size="100"-->
+    <!--layout="total, sizes, prev, pager, next, jumper"-->
+    <!--:total="400">-->
+    <!--</el-pagination>-->
+    <!--</el-row>-->
+    <!--</el-collapse-item>-->
+    <!--</el-collapse>-->
+    <!--</el-row>-->
+>>>>>>> 9dbe1218665c55faed30db80151fac3354479774
   </div>
 </template>
 
@@ -228,6 +318,7 @@
   export default {
     data() {
       return {
+        isDelete : false ,
         matarialArr : [] ,
         showBottomTable: true,
         value: null,
@@ -277,6 +368,9 @@
       }
     },
     methods: {
+      deleteClose (){
+        this.isDelete = false
+      },
       getMatarialArr (){
         let that = this
         this.$get(api.getMatarialArr).then(res=>{
@@ -353,12 +447,23 @@
           }
         })
       },
+      goPrint (item){
+        let id = item.id
+        this.$router.push({
+          name: `SandEdit`,
+          params: {
+            id: id ,
+            print: 1
+          }
+        })
+      },
       goEdit(item) {
         let id = item.id
         this.$router.push({
           name: `SandEdit`,
           params: {
-            id: id
+            id: id ,
+            print: 0
           }
         })
       },
@@ -464,7 +569,51 @@
         this.$router.push({
           name: `SandSave`
         })
-      }
+      },
+
+      delete1 (item , index){
+        this.isDelete = true
+        this.item = item
+        this.index = index
+      },
+      suredelete(){
+        if (this.index == 1){
+          let that = this
+          let data ={
+            id : that.item.id
+          }
+          this.$get(api.delete ,data).then(res=>{
+            if(res.errno == 0){
+              that.search()
+              this.$message.success('删除成功')
+              this.isDelete = false
+            }else{
+              this.isDelete = false
+              this.$message.success(res.errmsg)
+            }
+          })
+        }else{
+          let that = this
+          let data ={
+            id : that.item.id
+          }
+          this.$get(api.matarialdelete ,data).then(res=>{
+            if(res.errno == 0){
+              that.getMatarialArr()
+              this.$message.success('删除成功')
+              this.isDelete = false
+            }else{
+              this.isDelete = false
+              this.$message.success(res.errmsg)
+            }
+          })
+        }
+      },
+      delete2 (item , index){
+        this.isDelete = true
+        this.item = item
+        this.index = index
+      },
     }
   }
 </script>

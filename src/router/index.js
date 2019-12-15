@@ -32,7 +32,7 @@ export default new Router({
       component: SaveManagement
     },
     {
-      path: '/edit/:id',
+      path: '/edit/:id/:print',
       name: 'SandEdit',
       component: SandEdit
     },

@@ -946,6 +946,11 @@
       this.id = this.$route.params.id
       this.getData(this.id)
       this.getDataAll()
+      if(this.$route.params.print == 1){
+        setTimeout(function () {
+          window.print()
+        },1000)
+      }
     },
     methods: {
       getArr (arr){

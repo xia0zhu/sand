@@ -119,9 +119,10 @@
             <i class="iconfont icon-fujian"><span style="font-size: 14px;padding-left: 2px">附件</span></i>
           </div>
           <div class="btn">
-            <i class="iconfont icon-huodongliebiao"><span style="font-size: 14px;padding-left: 2px">沙盘</span></i>
+            <i class="iconfont icon-huodongliebiao"><span style="font-size: 14px;padding-left: 2px" @click="goSand">沙盘</span></i>
           </div>
         </div>
+
       </el-col>
 
       <el-col :span="18">
@@ -1564,6 +1565,9 @@
         // this.fetchExportBill (file.annexUrl)
       },
 
+      goSand(){
+        window.location.href = 'http://47.99.113.181:1001/emergency-system/map/iclient-leaflet/examples/leaflet/index.html';
+      }
 
     }
   }

@@ -949,7 +949,7 @@
       if(this.$route.params.print == 1){
         setTimeout(function () {
           window.print()
-        },2000)
+        },1000)
       }
     },
     methods: {

@@ -7,7 +7,7 @@
             <el-form-item label="演练时间"  class="fontsize_16">
               <el-date-picker class="fr"
                 size="small"
-                style="width:60%;margin-right:10%;"
+                style="width:260px;margin-right:40px;"
                 v-model="form.time"
                 type="daterange"
                 range-separator="—"
@@ -17,7 +17,8 @@
               </el-date-picker>
             </el-form-item>
             <el-form-item label="演练区县"  class="fontsize_16">
-              <el-select class="fr" v-model="form.region" size="small" placeholder="请选择组织单位" style="width:60%;margin-right:10%">
+              <el-select class="fr" v-model="form.region" size="small" placeholder="请选择组织单位"
+               style="width:260px;margin-right:40px;">
                 <el-option
                   v-for="item in organizationUnits"
                   :key="item.id"
@@ -27,7 +28,8 @@
               </el-select>
             </el-form-item>
             <el-form-item label="演练类型"  class="fontsize_16">
-              <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型" style="width:60%;margin-right: 10%">
+              <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型" 
+              style="width:260px;margin-right:40px;">
                 <el-option
                   v-for="item in planTypes"
                   :key="item.id"
@@ -36,16 +38,16 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <div style="display: flex;margin: 10px 10px 10px 10px;align-items: center;width:100%">
-              <div style="font-size: 16px;">演练单位</div>
-              <div  style="flex:1">
-                <treeselect style="font-size: 14px;width: 58%;float:right;margin-right:12%" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
+            <div class="el-form-item" >
+              <div class="el-form-item__label" style="font-size: 16px;width:80px">演练单位</div>
+              <div class="el-form-item__content" style="float:right;width:260px;margin-right:40px;">
+                <treeselect style="height:32px;" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
                             :options="joinUnits"/>
               </div>
             </div>
-            <el-form-item label="关键字"  class="fontsize_16">
+            <el-form-item label="关键字"  class="fontsize_16" >
               <el-input  placeholder="请输入关键字" size="small" v-model="form.key" class="fr input-with-select"
-                        style="width:60%;margin-right: 10%">
+                        style="width:260px;margin-right:40px;">
                 <el-button slot="append" size="small" icon="el-icon-search" @click="search"></el-button>
               </el-input>
             </el-form-item>

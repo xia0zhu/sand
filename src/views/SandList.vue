@@ -129,8 +129,8 @@
           min-width="1">
           <template slot-scope="scope">
             <el-button @click="goEdit(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">导出</el-button>
-            <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+            <el-button type="text" size="small" @click="goPrint(scope.row)">导出</el-button>
+            <el-button @click="delete1(scope.row , 1)" type="text" size="small" style="color: #f84e44;">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -198,7 +198,7 @@
           min-width="1">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+            <el-button @click="delete2(scope.row , 2)" type="text" size="small" style="color: #f84e44;">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -214,7 +214,18 @@
         </el-pagination>
       </el-row>
     </el-row>
-
+    <el-dialog
+      title="提示"
+      :visible.sync="isDelete"
+      width="30%"
+      style="text-align: left"
+      :before-close="deleteClose">
+      <span style="padding-left: 35%;font-size: 20px">是否删除该信息!</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="deleteClose">取 消</el-button>
+    <el-button type="primary" @click="suredelete">确 定</el-button>
+  </span>
+    </el-dialog>
     <!--<el-row class="bottomTable">-->
     <!--<el-collapse v-model="activeNames" @change="handleChange">-->
     <!--<el-collapse-item name="1">-->
@@ -291,6 +302,7 @@
   export default {
     data() {
       return {
+        isDelete : false ,
         matarialArr : [] ,
         showBottomTable: true,
         value: null,
@@ -340,6 +352,9 @@
       }
     },
     methods: {
+      deleteClose (){
+        this.isDelete = false
+      },
       getMatarialArr (){
         let that = this
         this.$get(api.getMatarialArr).then(res=>{
@@ -416,12 +431,23 @@
           }
         })
       },
+      goPrint (item){
+        let id = item.id
+        this.$router.push({
+          name: `SandEdit`,
+          params: {
+            id: id ,
+            print: 1
+          }
+        })
+      },
       goEdit(item) {
         let id = item.id
         this.$router.push({
           name: `SandEdit`,
           params: {
-            id: id
+            id: id ,
+            print: 0
           }
         })
       },
@@ -527,7 +553,51 @@
         this.$router.push({
           name: `SandSave`
         })
-      }
+      },
+
+      delete1 (item , index){
+        this.isDelete = true
+        this.item = item
+        this.index = index
+      },
+      suredelete(){
+        if (this.index == 1){
+          let that = this
+          let data ={
+            id : that.item.id
+          }
+          this.$get(api.delete ,data).then(res=>{
+            if(res.errno == 0){
+              that.search()
+              this.$message.success('删除成功')
+              this.isDelete = false
+            }else{
+              this.isDelete = false
+              this.$message.success(res.errmsg)
+            }
+          })
+        }else{
+          let that = this
+          let data ={
+            id : that.item.id
+          }
+          this.$get(api.matarialdelete ,data).then(res=>{
+            if(res.errno == 0){
+              that.getMatarialArr()
+              this.$message.success('删除成功')
+              this.isDelete = false
+            }else{
+              this.isDelete = false
+              this.$message.success(res.errmsg)
+            }
+          })
+        }
+      },
+      delete2 (item , index){
+        this.isDelete = true
+        this.item = item
+        this.index = index
+      },
     }
   }
 </script>

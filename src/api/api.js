@@ -10,5 +10,8 @@ export const api = {
   getMatarialList:"dm/archivedData/list",
   matarialdetail : "dm/archivedData/detail" ,
   matarialupdate  : 'dm/archivedData/update' ,
-  matarialadd  : 'dm/archivedData/add'
+  matarialadd  : 'dm/archivedData/add',
+
+  delete : "dp/project/delete" ,
+  matarialdelete : "dm/archivedData/delete" ,
 }

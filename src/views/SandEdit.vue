@@ -942,7 +942,7 @@
       EditorBar
     },
     mounted() {
-      this.$store.commit("change", '演练方案');
+      this.$store.commit("change", '修改方案');
       this.id = this.$route.params.id
       this.getData(this.id)
       this.getDataAll()

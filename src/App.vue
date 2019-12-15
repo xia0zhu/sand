@@ -14,7 +14,7 @@
        <el-breadcrumb-item :to="{ path: '/list' }">系统演练</el-breadcrumb-item>
       <el-breadcrumb-item class="fontColor_blue">{{currentname}}</el-breadcrumb-item>
     </el-breadcrumb>
-    <router-view style="padding:0 16px 10px 0"/>
+    <router-view style="padding:0 16px 10px 16px"/>
   </div>
 </template>
 

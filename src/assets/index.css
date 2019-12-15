@@ -1,0 +1,86 @@
+html,body{
+    font-family:Arial,'Times New Roman','Microsoft YaHei',SimHei; 
+}
+.mainTitleFontSize{
+    font-size: 20px;
+}
+.fontsize_16{
+    font-size: 16px !important;
+
+}
+.fontsize_14{
+    font-size: 14px;
+
+}
+.fontsize_12{
+    font-size: 12px;
+
+}
+.fontColor_red{
+    color:#f84e44 !important;
+}
+.fontColor_blue{
+    color:#006aff !important;
+}
+.el-table ,.el-table--fit, .el-table--enable-row-hover, .el-table--enable-row-transition,.el-table__body{
+    background:#fff !important;
+
+}
+.el-table__row{
+    /* background:black!important */
+
+}
+.el-breadcrumb__item:last-child .el-breadcrumb__inner,.el-breadcrumb__item .el-breadcrumb__inner a,.el-breadcrumb__inner a:hover, .el-breadcrumb__item .el-breadcrumb__inner:hover,.fontColor_blue>.el-breadcrumb__inner{
+    color:#006aff !important;
+}
+.fr{
+    float: right;
+}
+.fontsize_16> .el-form-item__label{
+    font-size: 16px !important;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+    background-color: #006aff;
+    color: #FFF;
+}
+
+
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+    color: #006aff;
+}
+.el-tabs__item:hover,.el-tabs__item.is-active,
+.el-date-table td.today span,.el-date-table td.available:hover,.el-select-dropdown__item.selected,
+.vue-treeselect__multi-value-item,.vue-treeselect__value-remove  {
+    color: #006aff!important;
+}
+.is-active,.el-input.el-input--small.el-input--suffix.is-focus >.el-input__inner,.el-input__inner:hover{
+     border-color:#006aff !important;
+
+}
+.el-date-table td.end-date span, .el-date-table td.start-date span {
+    background-color: #006aff;
+}
+.el-tabs__active-bar{
+    background-color:#006aff;
+}
+.el-breadcrumb__inner a, .el-breadcrumb__inner.is-link{
+    font-weight:normal;
+}
+.el-picker-panel{
+   top:130px !important;
+}
+.el-step__head.is-finish,.el-step__title.is-finish {
+    color: #006aff !important;
+    border-color: #006aff !important;
+}
+.el-date-table td.current:not(.disabled) span{
+    background-color: #006aff !important;
+    color:#fff !important
+
+}
+
+
+.el-button--primary {
+    background-color: #006aff !important;
+    border-color: #006aff !important;
+}

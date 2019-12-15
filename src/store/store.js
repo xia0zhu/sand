@@ -5,7 +5,7 @@ Vue.use(Vuex) // 使用插件
 
 export default new Vuex.Store({
   state: {
-    title: '系统演练' // 加一个状态
+    title: '演练方案' // 加一个状态
   },
   getter: {
 

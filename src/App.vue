@@ -3,17 +3,18 @@
     <!--<div id="app" :style="{ height: screenHeight + 'px', width: screenWidth + 'px' ,background: color }">-->
 <!--    <img src="./assets/logo.png">-->
     <div class="bar">
-      <div style="padding-left:16px">应急演练管理子系统</div>
+      <div class="mainTitleFontSize" style="padding-left:16px;color:#ffffff">天津市应急演练管理子系统</div>
       <div style="display: flex;margin-right: 30px">
         <div style="margin-right: 10px;cursor: pointer" class="btn" @click="goSand">进入沙盘</div>
         <div class="btn">退出</div>
       </div>
     </div>
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding: 5px 16px 0 16px;">
-      <el-breadcrumb-item :to="{ path: '/list' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item style="color:#006aff">{{currentname}}</el-breadcrumb-item>
+    <el-breadcrumb separator-class="el-icon-arrow-right" style="padding: 10px 16px 10px 16px;">
+      <el-breadcrumb-item >首页</el-breadcrumb-item>
+       <el-breadcrumb-item :to="{ path: '/list' }">系统演练</el-breadcrumb-item>
+      <el-breadcrumb-item class="fontColor_blue">{{currentname}}</el-breadcrumb-item>
     </el-breadcrumb>
-    <router-view/>
+    <router-view style="padding:0 16px 10px 0"/>
   </div>
 </template>
 
@@ -50,6 +51,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  /* margin-bottom: 10px; */
 }
   .bar{
     width:100%;height:60px;line-height:60px;background:black;display:flex;
@@ -66,4 +68,5 @@ export default {
     justify-content: center;
     font-size: 14px;
   }
+ 
 </style>

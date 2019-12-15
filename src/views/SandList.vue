@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-row style="padding: 10px">
+    <el-row style="padding: 0 0 10px 0">
       <el-col :span="11">
         <div class="grid-content bg-purple" style="height: 300px">
-          <el-form ref="form" :model="form" label-width="80px" style="background: #fff;padding: 10px 0;">
-            <el-form-item label="演练时间" style="font-size: 16px">
-              <el-date-picker
+          <el-form ref="form" :model="form" label-width="80px" style="background: #fff;padding: 20px 0 10px 10px;">
+            <el-form-item label="演练时间"  class="fontsize_16">
+              <el-date-picker class="fr"
                 size="small"
-                style="width:60%;margin-left: -30%"
+                style="width:60%;margin-right:10%;"
                 v-model="form.time"
                 type="daterange"
                 range-separator="—"
@@ -16,8 +16,8 @@
                 end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="演练区县" style="font-size: 16px">
-              <el-select v-model="form.region" size="small" placeholder="请选择组织单位" style="width:60%;margin-left: -30%">
+            <el-form-item label="演练区县"  class="fontsize_16">
+              <el-select class="fr" v-model="form.region" size="small" placeholder="请选择组织单位" style="width:60%;margin-right:10%">
                 <el-option
                   v-for="item in organizationUnits"
                   :key="item.id"
@@ -26,8 +26,8 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="演练类型" style="font-size: 16px">
-              <el-select v-model="form.type" size="small" placeholder="请选择预案类型" style="width:60%;margin-left: -30%">
+            <el-form-item label="演练类型"  class="fontsize_16">
+              <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型" style="width:60%;margin-right: 10%">
                 <el-option
                   v-for="item in planTypes"
                   :key="item.id"
@@ -36,30 +36,30 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <div style="display: flex;margin: 10px;align-items: center">
-              <div style="font-size: 14px">演练单位</div>
-              <div style="width: 56%;margin-left: 6.2%;">
+            <div style="display: flex;margin: 10px 0 10px 10px;align-items: center;width:100%">
+              <div style="font-size: 16px;margin-right:10%;">演练单位</div>
+              <div  style="width: 60%;margin-right: 10%;flex:1">
                 <treeselect style="font-size: 14px" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
                             :options="joinUnits"/>
               </div>
             </div>
-            <el-form-item label="关键字" style="font-size: 16px">
-              <el-input placeholder="请输入关键字" size="small" v-model="form.key" class="input-with-select"
-                        style="width:60%;margin-left: -30%">
+            <el-form-item label="关键字"  class="fontsize_16">
+              <el-input  placeholder="请输入关键字" size="small" v-model="form.key" class="fr input-with-select"
+                        style="width:60%;margin-right: 10%">
                 <el-button slot="append" size="small" icon="el-icon-search" @click="search"></el-button>
               </el-input>
             </el-form-item>
           </el-form>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="13">
         <div class="grid-content bg-purple-light"
-             style="background: #fff;padding: 10px 0;margin-left: 50px;display: flex;padding: 10px 20px;">
-          <div style="width: 30%;text-align: left ;padding: 10px 0 0 20px;">
-            <div style="font-size: 16px">
+             style="background: #fff;padding: 10px 0;margin-left: 50px;display: flex;padding: 10px 10px 10px 20px">
+          <div style="width: 30%;text-align: left ;padding: 10px 0 0 0;">
+            <div  class="fontsize_16">
               统计分析
             </div>
-            <el-select v-model="form.value" size="small" placeholder="请选择统计类型" style="width:80%;padding: 10px 0 ;">
+            <el-select v-model="form.value" size="small" placeholder="请选择统计类型" style="width:100%;padding: 10px 0 ;">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -68,10 +68,10 @@
               </el-option>
             </el-select>
 
-            <div style="font-size: 16px">
+            <div class="fontsize_16">
               单位分析
             </div>
-            <el-select v-model="form.value" size="small" placeholder="请选择参演单位" style="width:80%;padding: 10px 0 ;">
+            <el-select v-model="form.value" size="small" placeholder="请选择参演单位" style="width:100%;padding: 10px 0 ;">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -93,12 +93,12 @@
         <div style="cursor: pointer" class="btn" @click.stop="newStand">新建演练</div>
       </div>
     </el-row>
-    <el-row style="padding: 0 10px">
+    <el-row style="padding: 0 ;background:#e5ebff"> 
       <el-table
         :data="tableData"
         :row-style="{fontSize:'14px',color:'#000'}"
-        :header-cell-style="{fontSize:'16px',color:'#000','font-weight':'500', background:'#F5F7FA'}"
-        border>
+        :header-cell-style="{fontSize:'16px',color:'#000','font-weight':'500',margin:0,width:'100%' }"
+      >
         <el-table-column
           align="left"
           prop="projectName"
@@ -128,8 +128,8 @@
           label="操作"
           min-width="1">
           <template slot-scope="scope">
-            <el-button @click="goEdit(scope.row)" type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">导出</el-button>
+            <el-button @click="goEdit(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
+            <el-button type="text" size="small" style="color: #30713f;">导出</el-button>
             <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
           </template>
         </el-table-column>
@@ -137,12 +137,13 @@
     </el-row>
     <el-row class="pages">
       <el-pagination
+      background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="[10, 20, 50, 100]"
         :page-size="pagesSize"
-        layout="total, sizes, prev, pager, next, jumper"
+        layout="  prev, pager, next,sizes,total, jumper"
         :total="totalLists">
       </el-pagination>
     </el-row>
@@ -154,7 +155,7 @@
         <div style="cursor: pointer" class="btn" v-on:click.stop="uploadMetrail">材料上传</div>
       </div>
     </el-row>
-    <el-row style="background: #fff;margin: 0 10px" v-if="showBottomTable">
+    <el-row style="background: #fff;margin: 0 " v-if="showBottomTable">
       <template slot="title">
         <div style="display: flex;">
           <div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"
@@ -166,14 +167,12 @@
       </template>
       <el-tabs v-model="matarialCode" @tab-click="getMatarialList" style="padding-left: 10px">
         <el-tab-pane v-for="(item , index) in matarialArr" :label="item.value" :key="item.code" :name="item.code"></el-tab-pane>
-<!--        <el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
-<!--        <el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
       </el-tabs>
       <el-table
         :data="tableData2"
         :row-style="{fontSize:'14px',color:'#000'}"
         :header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"
-        border>
+        >
         <el-table-column
           align="left"
           prop="title"
@@ -197,88 +196,26 @@
           label="操作"
           min-width="1">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
             <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-row class="pages">
+      <el-row class="pages" style="margin-bottom:0">
         <el-pagination
+        background
           @size-change="handleSizeChange2"
           @current-change="handleCurrentChange2"
           :current-page="currentPage2"
           :page-sizes="[10, 20, 50, 100]"
           :page-size="pagesSize2"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="prev, pager, next,sizes,total, jumper"
           :total="totalLists2">
         </el-pagination>
       </el-row>
     </el-row>
 
-    <!--<el-row class="bottomTable">-->
-    <!--<el-collapse v-model="activeNames" @change="handleChange">-->
-    <!--<el-collapse-item name="1">-->
-    <!--<template slot="title">-->
-    <!--<div style="display: flex;">-->
-    <!--<div style="font-size: 16px;padding-left:10px"><i style="margin-right: 5px"-->
-    <!--class="el-icon-s-operation"></i><span>演练材料</span></div>-->
-    <!--<div style="position: absolute;right: 14px;font-size: 14px">-->
-    <!--<el-button size="small" type="primary" @click.stop="uploadStuff">材料上传</el-button>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</template>-->
-    <!--<el-tabs v-model="activeName" @tab-click="" style="padding-left: 10px">-->
-    <!--<el-tab-pane label="自然灾害" name="first"></el-tab-pane>-->
-    <!--<el-tab-pane label="事故灾害" name="second"></el-tab-pane>-->
-    <!--<el-tab-pane label="公共卫生" name="third"></el-tab-pane>-->
-    <!--</el-tabs>-->
-    <!--<el-table-->
-    <!--:data="tableData2"-->
-    <!--:row-style="{fontSize:'14px',color:'#000'}"-->
-    <!--:header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"-->
-    <!--border>-->
-    <!--<el-table-column-->
-    <!--align="left"-->
-    <!--prop="date"-->
-    <!--label="演练名称"-->
-    <!--min-width="2">-->
-    <!--</el-table-column>-->
-    <!--<el-table-column-->
-    <!--align="center"-->
-    <!--label="演练名称"-->
-    <!--prop="name"-->
-    <!--min-width="1">-->
-    <!--</el-table-column>-->
-    <!--<el-table-column-->
-    <!--prop="province"-->
-    <!--label="演练名称"-->
-    <!--align="center"-->
-    <!--min-width="1">-->
-    <!--</el-table-column>-->
-    <!--<el-table-column-->
-    <!--align="center"-->
-    <!--label="操作"-->
-    <!--min-width="1">-->
-    <!--<template slot-scope="scope">-->
-    <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
-    <!--<el-button type="text" size="small" style="color: #f84e44;">删除</el-button>-->
-    <!--</template>-->
-    <!--</el-table-column>-->
-    <!--</el-table>-->
-    <!--<el-row class="pages">-->
-    <!--<el-pagination-->
-    <!--@size-change="handleSizeChange"-->
-    <!--@current-change="handleCurrentChange"-->
-    <!--:current-page="currentPage"-->
-    <!--:page-sizes="[100, 200, 300, 400]"-->
-    <!--:page-size="100"-->
-    <!--layout="total, sizes, prev, pager, next, jumper"-->
-    <!--:total="400">-->
-    <!--</el-pagination>-->
-    <!--</el-row>-->
-    <!--</el-collapse-item>-->
-    <!--</el-collapse>-->
-    <!--</el-row>-->
+ 
   </div>
 </template>
 
@@ -324,7 +261,7 @@
       Treeselect,
     },
     mounted() {
-      this.$store.commit("change", '系统演练');
+      this.$store.commit("change", '演练方案');
       this.getEchart()
       this.getData()
       this.search()
@@ -551,7 +488,7 @@
 
   .line {
     background: #fff;
-    margin: 0 10px;
+    margin: 0 0 2.6px 0 ;
     padding: 10px;
     text-align: left;
     display: flex;
@@ -559,13 +496,12 @@
   }
 
   .pages {
-    margin: -10px 10px 10px 10px;
+    margin: 5px 0 10px 0;
     height: 50px;
     background: #fff;
     display: flex;
-    /* justify-content: right; */
     align-items: center;
-    justify-content: flex-end;
+    justify-content:center;
   }
 
   .bottomTable {

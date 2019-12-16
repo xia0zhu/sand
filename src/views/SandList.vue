@@ -28,7 +28,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="演练类型"  class="fontsize_16">
-              <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型" 
+              <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型"
               style="width:260px;margin-right:40px;">
                 <el-option
                   v-for="item in planTypes"
@@ -95,7 +95,7 @@
         <div style="cursor: pointer" class="btn" @click.stop="newStand">新建演练</div>
       </div>
     </el-row>
-    <el-row style="padding: 0 ;background:#e5ebff"> 
+    <el-row style="padding: 0 ;background:#e5ebff">
       <el-table
         :data="tableData"
         :row-style="{fontSize:'14px',color:'#000'}"
@@ -131,8 +131,8 @@
           min-width="1">
           <template slot-scope="scope">
             <el-button @click="goEdit(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
-            <el-button type="text" size="small" style="color: #30713f;">导出</el-button>
-            <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+            <el-button type="text" size="small" @click="goPrint(scope.row)" style="color: #30713f;">导出</el-button>
+            <el-button @click="delete1(scope.row , 1)" type="text" size="small" style="color: #f84e44;">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -199,7 +199,7 @@
           min-width="1">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small" style="color: #30713f;">查看</el-button>
-            <el-button type="text" size="small" style="color: #f84e44;">删除</el-button>
+            <el-button type="text" size="small" style="color: #f84e44;" @click="delete2(scope.row , 2)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -217,7 +217,19 @@
       </el-row>
     </el-row>
 
- 
+    <el-dialog
+      title="提示"
+      :visible.sync="isDelete"
+      width="30%"
+      style="text-align: left"
+      :before-close="deleteClose">
+      <span style=";font-size: 20px">是否删除该信息!</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="deleteClose">取 消</el-button>
+    <el-button type="primary" @click="suredelete">确 定</el-button>
+  </span>
+    </el-dialog>
+
   </div>
 </template>
 

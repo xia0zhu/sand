@@ -148,7 +148,7 @@
 
       <el-col :span="18">
         <div style="display: flex;margin: 10px">
-          <div style="font-size: 14px;padding-top: 20px">演讲总结</div>
+          <div style="font-size: 14px;padding-top: 20px">演练总结</div>
           <div style="width: 56%;margin-left: 5%;">
             <editor-bar v-model="summary.content" :isClear="isClear" @change="change"></editor-bar>
           </div>

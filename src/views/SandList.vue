@@ -425,7 +425,7 @@
           title: {},
           tooltip: {},
           xAxis: {
-            data: ['长清区', '商河县', '济南县', '历城区', '章丘区', '天桥区', '槐阴区', '市中区', '市中区', '高新区'],
+            data: ['津南区', '北辰区', '武清区', '宝坻区', '宁河区', '静海区', '蓟州区',],
             axisLabel: {
               interval: 0,  //设置这里
               margin: 10
@@ -446,13 +446,13 @@
             }
           },
           series: [{
-            name: '销量',
+            name: '方案',
             type: 'bar',
             data: [5, 20, 36, 100, 10, 20, 36, 10, 100, 20],
             itemStyle: {
               normal: {
                 color: function (params) {
-                  var colorList = ["#5196d7", "#5196d7", "#5196d7", "#5196d7", "#5196d7", "#5196d7", "#5196d7", "#5196d7", "#d75d54", "#d75d54"];
+                  var colorList = ["#5196d7", "#5196d7", "#5196d7", "#5196d7", "#5196d7", "#d75d54", "#d75d54"];
                   return colorList[params.dataIndex]
                 }
               }

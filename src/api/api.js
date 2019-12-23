@@ -14,4 +14,5 @@ export const api = {
 
   delete : "dp/project/delete" ,
   matarialdelete : "dm/archivedData/delete" ,
+  statisticsByArea :"dp/project/statisticsByArea"
 }

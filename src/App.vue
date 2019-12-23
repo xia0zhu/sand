@@ -33,8 +33,8 @@ export default {
   },
   methods : {
     goSand(){
-      window.location.href = 'http://47.99.113.181:1001/emergency-system/map/iclient-leaflet/examples/leaflet/index.html';
-      // window.location.href = '/emergency-system/sand/sand.html';
+      // window.location.href = 'http://47.99.113.181:1001/emergency-system/map/iclient-leaflet/examples/leaflet/index.html';
+      window.location.href = '/emergency-system/sand/map/index .html';
     }
   },
   computed : {

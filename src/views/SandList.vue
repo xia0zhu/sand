@@ -4,21 +4,21 @@
       <el-col :span="11">
         <div class="grid-content bg-purple" style="height: 300px">
           <el-form ref="form" :model="form" label-width="80px" style="background: #fff;padding: 20px 0 10px 10px;">
-            <el-form-item label="演练时间"  class="fontsize_16">
+            <el-form-item label="演练时间" class="fontsize_16">
               <el-date-picker class="fr"
-                size="small"
-                style="width:260px;margin-right:40px;"
-                v-model="form.time"
-                type="daterange"
-                range-separator="—"
-                @change="timeSelect"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                              size="small"
+                              style="width:260px;margin-right:40px;"
+                              v-model="form.time"
+                              type="daterange"
+                              range-separator="—"
+                              @change="timeSelect"
+                              start-placeholder="开始日期"
+                              end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
-            <el-form-item label="演练区县"  class="fontsize_16">
+            <el-form-item label="演练区县" class="fontsize_16">
               <el-select class="fr" v-model="form.region" size="small" placeholder="请选择组织单位"
-               style="width:260px;margin-right:40px;">
+                         style="width:260px;margin-right:40px;">
                 <el-option
                   v-for="item in organizationUnits"
                   :key="item.id"
@@ -27,9 +27,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="演练类型"  class="fontsize_16">
+            <el-form-item label="演练类型" class="fontsize_16">
               <el-select class="fr" v-model="form.type" size="small" placeholder="请选择预案类型"
-              style="width:260px;margin-right:40px;">
+                         style="width:260px;margin-right:40px;">
                 <el-option
                   v-for="item in planTypes"
                   :key="item.id"
@@ -38,15 +38,15 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <div class="el-form-item" >
+            <div class="el-form-item">
               <div class="el-form-item__label" style="font-size: 16px;width:80px">演练单位</div>
               <div class="el-form-item__content" style="float:right;width:260px;margin-right:40px;">
                 <treeselect style="height:32px;" placeholder="请选择参演单位" v-model="form.part" :multiple="true"
                             :options="joinUnits"/>
               </div>
             </div>
-            <el-form-item label="关键字"  class="fontsize_16" >
-              <el-input  placeholder="请输入关键字" size="small" v-model="form.key" class="fr input-with-select"
+            <el-form-item label="关键字" class="fontsize_16">
+              <el-input placeholder="请输入关键字" size="small" v-model="form.key" class="fr input-with-select"
                         style="width:260px;margin-right:40px;">
                 <el-button slot="append" size="small" icon="el-icon-search" @click="search"></el-button>
               </el-input>
@@ -58,7 +58,7 @@
         <div class="grid-content bg-purple-light"
              style="background: #fff;padding: 10px 0;margin-left: 50px;display: flex;padding: 10px 10px 10px 20px">
           <div style="width: 30%;text-align: left ;padding: 10px 0 0 0;">
-            <div  class="fontsize_16">
+            <div class="fontsize_16">
               统计分析
             </div>
             <el-select v-model="form.value" size="small" placeholder="请选择统计类型" style="width:100%;padding: 10px 0 ;">
@@ -139,7 +139,7 @@
     </el-row>
     <el-row class="pages">
       <el-pagination
-      background
+        background
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
@@ -168,13 +168,14 @@
         </div>
       </template>
       <el-tabs v-model="matarialCode" @tab-click="getMatarialList" style="padding-left: 10px">
-        <el-tab-pane v-for="(item , index) in matarialArr" :label="item.value" :key="item.code" :name="item.code"></el-tab-pane>
+        <el-tab-pane v-for="(item , index) in matarialArr" :label="item.value" :key="item.code"
+                     :name="item.code"></el-tab-pane>
       </el-tabs>
       <el-table
         :data="tableData2"
         :row-style="{fontSize:'14px',color:'#000'}"
         :header-cell-style="{fontSize:'16px','display' :'none' ,color:'#000','font-weight':'500', background:'#F5F7FA'}"
-        >
+      >
         <el-table-column
           align="left"
           prop="title"
@@ -205,7 +206,7 @@
       </el-table>
       <el-row class="pages" style="margin-bottom:0">
         <el-pagination
-        background
+          background
           @size-change="handleSizeChange2"
           @current-change="handleCurrentChange2"
           :current-page="currentPage2"
@@ -242,8 +243,8 @@
   export default {
     data() {
       return {
-        isDelete : false ,
-        matarialArr : [] ,
+        isDelete: false,
+        matarialArr: [],
         showBottomTable: true,
         value: null,
         name: "TableList",
@@ -270,6 +271,8 @@
         currentPage2: 1,
         totalLists2: 0,
         pagesSize2: 10,
+        areaValue: [],
+        areaTotal: []
       }
     },
     components: {
@@ -277,10 +280,12 @@
     },
     mounted() {
       this.$store.commit("change", '演练方案');
-      this.getEchart()
+      // this.getStatisticsByArea()
       this.getData()
       this.search()
       this.getMatarialArr()
+
+      this.getEchart()
     },
     watch: {
       'form.time': function (val) {
@@ -292,29 +297,44 @@
       }
     },
     methods: {
-      deleteClose (){
+      getStatisticsByArea() {
+        return new Promise((resolve, reject) => {
+          this.$post(api.statisticsByArea).then(res => {
+            if (res.errno == 0) {
+              for (let item of res.data)
+                this.areaValue.push(item.areaValue) ,
+                  this.areaTotal.push(item.total)
+              resolve(true)
+            }
+            console.log(this.areaValue)
+            onsole.log(this.areaTotal)
+          })
+        })
+
+      },
+      deleteClose() {
         this.isDelete = false
       },
-      getMatarialArr (){
+      getMatarialArr() {
         let that = this
-        this.$get(api.getMatarialArr).then(res=>{
-          if(res.errno == 0){
+        this.$get(api.getMatarialArr).then(res => {
+          if (res.errno == 0) {
             this.matarialArr = res.data.archivedDataTypes
             this.matarialCode = res.data.archivedDataTypes[0].code
-            that.getMatarialList ()
+            that.getMatarialList()
           }
         })
       },
-      getMatarialList (){
+      getMatarialList() {
         let that = this
         let data = {
-          archivedDataType : that.matarialCode ,
-          pageNum : that.currentPage2 ,
-          pageSize : that.pagesSize2
+          archivedDataType: that.matarialCode,
+          pageNum: that.currentPage2,
+          pageSize: that.pagesSize2
         }
-        this.$post(api.getMatarialList , data).then(res=>{
-          if(res.errno == 0){
-            for (let item of res.data.archivedDataList){
+        this.$post(api.getMatarialList, data).then(res => {
+          if (res.errno == 0) {
+            for (let item of res.data.archivedDataList) {
               item.creationDate = util.timeFun(item.creationDate)
             }
             this.totalLists2 = res.data.total
@@ -361,7 +381,7 @@
         })
         console.log(this.form)
       },
-      handleClick (item){
+      handleClick(item) {
         let id = item.id
         // let id = 16
         this.$router.push({
@@ -371,12 +391,12 @@
           }
         })
       },
-      goPrint (item){
+      goPrint(item) {
         let id = item.id
         this.$router.push({
           name: `SandEdit`,
           params: {
-            id: id ,
+            id: id,
             print: 1
           }
         })
@@ -386,7 +406,7 @@
         this.$router.push({
           name: `SandEdit`,
           params: {
-            id: id ,
+            id: id,
             print: 0
           }
         })
@@ -417,15 +437,22 @@
         this.currentPage2 = val
         this.getMatarialList()
       },
-      getEchart() {
+      async getEchart() {
         var myChart = this.$echarts.init(document.getElementById('main'));
 
 // 绘制图表
+        let flag = await  this.getStatisticsByArea()
+
+        let that = this
         myChart.setOption({
           title: {},
-          tooltip: {},
+          tooltip: {
+            formatter(params) {
+              return params.name + '&nbsp;:' + params.value
+            },
+          },
           xAxis: {
-            data: ['津南区', '北辰区', '武清区', '宝坻区', '宁河区', '静海区', '蓟州区',],
+            data: that.areaValue,
             axisLabel: {
               interval: 0,  //设置这里
               margin: 10
@@ -442,13 +469,14 @@
           yAxis: {
             type: 'value',
             axisLabel: {
-              formatter: '{value}%'
+              // formatter: '{value}%'
+              formatter: '{value}'
             }
           },
           series: [{
             name: '方案',
             type: 'bar',
-            data: [5, 20, 36, 100, 10, 20, 36, 10, 100, 20],
+            data: that.areaTotal,
             itemStyle: {
               normal: {
                 color: function (params) {
@@ -495,45 +523,45 @@
         })
       },
 
-      delete1 (item , index){
+      delete1(item, index) {
         this.isDelete = true
         this.item = item
         this.index = index
       },
-      suredelete(){
-        if (this.index == 1){
+      suredelete() {
+        if (this.index == 1) {
           let that = this
-          let data ={
-            id : that.item.id
+          let data = {
+            id: that.item.id
           }
-          this.$get(api.delete ,data).then(res=>{
-            if(res.errno == 0){
+          this.$get(api.delete, data).then(res => {
+            if (res.errno == 0) {
               that.search()
               this.$message.success('删除成功')
               this.isDelete = false
-            }else{
+            } else {
               this.isDelete = false
               this.$message.success(res.errmsg)
             }
           })
-        }else{
+        } else {
           let that = this
-          let data ={
-            id : that.item.id
+          let data = {
+            id: that.item.id
           }
-          this.$get(api.matarialdelete ,data).then(res=>{
-            if(res.errno == 0){
+          this.$get(api.matarialdelete, data).then(res => {
+            if (res.errno == 0) {
               that.getMatarialArr()
               this.$message.success('删除成功')
               this.isDelete = false
-            }else{
+            } else {
               this.isDelete = false
               this.$message.success(res.errmsg)
             }
           })
         }
       },
-      delete2 (item , index){
+      delete2(item, index) {
         this.isDelete = true
         this.item = item
         this.index = index
@@ -561,7 +589,7 @@
 
   .line {
     background: #fff;
-    margin: 0 0 2.6px 0 ;
+    margin: 0 0 2.6px 0;
     padding: 10px;
     text-align: left;
     display: flex;
@@ -574,7 +602,7 @@
     background: #fff;
     display: flex;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
   }
 
   .bottomTable {

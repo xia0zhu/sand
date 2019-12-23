@@ -2,7 +2,7 @@ import axios from 'axios';
 import Router from '../router/index'
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL =process.env.WEB_API;
-// axios.defaults.baseURL ='http://47.99.113.181:1003/'
+// axios.defaults.baseURL ='http://47.99.113.181:2001/'
 console.log(axios.defaults.baseURL)
 //http request 拦截器
 axios.interceptors.request.use(
